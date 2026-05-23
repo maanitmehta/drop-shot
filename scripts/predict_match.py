@@ -240,10 +240,12 @@ def predict_match(A, B, tour="atp", tournament="ao26", **kwargs):
         "elo_diff_global":       a_global - b_global,
         "elo_diff_surface":      a_surf   - b_surf,
         "h2h_clay_diff":         h2h_clay_diff,
-        "round_depth":           round_depth,
-        "rest_days_diff":        rest_days_diff,
         "quality_winrate_diff":  quality_winrate_diff,
         "elo_diff_rg":           elo_diff_rg,
+        "clay_winrate_diff":     safe_diff(
+            a.get("clay_winrate_lastN", float("nan")),
+            b.get("clay_winrate_lastN", float("nan")),
+        ),
     }
 
     X = pd.DataFrame([features])
