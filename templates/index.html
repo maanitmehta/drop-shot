@@ -1,0 +1,2619 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Drop Shot · Roland-Garros 2026</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+/* ── Tokens ─────────────────────────────────────────────────────────── */
+:root {
+  --bg:          #F5F0E8;
+  --surface:     #FFFFFF;
+  --card:        #FFFFFF;
+  --card2:       #F9F5EF;
+  --border:      rgba(26,20,16,.09);
+  --bhi:         rgba(26,20,16,.18);
+  --text:        #1a1410;
+  --muted:       #8C7E73;
+  --loser:       #C0B0A0;
+  --clay:        #C0392B;
+  --clay-l:      #E74C3C;
+  --clay-d:      #8B1A13;
+  --gold:        #9A6F00;
+  --gold-dim:    rgba(154,111,0,.08);
+  --winner-bg:   rgba(192,57,43,.05);
+  --winner-col:  #C0392B;
+  --shadow-sm:   0 1px 3px rgba(0,0,0,.07),0 2px 8px rgba(0,0,0,.04);
+  --shadow-md:   0 2px 10px rgba(0,0,0,.09),0 8px 28px rgba(0,0,0,.05);
+  --hdr-bg:      #C0392B;
+  --hdr-text:    #FFFFFF;
+  --slot:        34px;
+  --match:       68px;
+}
+
+[data-theme="dark"] {
+  --bg:          #100E0B;
+  --surface:     #1A1714;
+  --card:        #201D19;
+  --card2:       #272320;
+  --border:      rgba(255,255,255,.07);
+  --bhi:         rgba(255,255,255,.13);
+  --text:        #EDE5D8;
+  --muted:       #7A7068;
+  --loser:       #3E3830;
+  --clay:        #E74C3C;
+  --clay-l:      #FF6456;
+  --clay-d:      #C0392B;
+  --gold:        #D4A843;
+  --gold-dim:    rgba(212,168,67,.1);
+  --winner-bg:   rgba(212,168,67,.08);
+  --winner-col:  #D4A843;
+  --shadow-sm:   0 1px 3px rgba(0,0,0,.4);
+  --shadow-md:   0 4px 20px rgba(0,0,0,.5);
+  --hdr-bg:      #1A1714;
+  --hdr-text:    #EDE5D8;
+}
+
+/* ── Reset ──────────────────────────────────────────────────────────── */
+*,*::before,*::after { box-sizing:border-box; margin:0; padding:0; }
+html,body { height:100%; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Inter', sans-serif;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+  transition: background .3s, color .3s;
+}
+
+/* ── Header ──────────────────────────────────────────────────────────── */
+header {
+  flex-shrink: 0;
+  background: var(--hdr-bg);
+  color: var(--hdr-text);
+  padding: 0 28px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  transition: background .3s;
+}
+
+.logo {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.35rem;
+  font-weight: 900;
+  color: var(--hdr-text);
+  letter-spacing: -.3px;
+  white-space: nowrap;
+}
+
+.logo-sub {
+  font-size: 11px;
+  font-weight: 500;
+  opacity: .65;
+  color: var(--hdr-text);
+  letter-spacing: .3px;
+  white-space: nowrap;
+  margin-left: 10px;
+}
+
+.hdr-right {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* dark toggle */
+.dark-toggle {
+  width: 34px; height: 34px;
+  border-radius: 50%;
+  background: rgba(255,255,255,.15);
+  border: 1px solid rgba(255,255,255,.2);
+  color: var(--hdr-text);
+  font-size: 15px;
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: background .15s;
+}
+.dark-toggle:hover { background: rgba(255,255,255,.25); }
+
+/* tour toggle */
+.tour-toggle {
+  display: flex;
+  background: rgba(0,0,0,.2);
+  border-radius: 8px;
+  padding: 3px;
+  gap: 2px;
+}
+.tour-btn {
+  padding: 5px 16px;
+  border: none;
+  background: transparent;
+  color: rgba(255,255,255,.65);
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: .15s;
+}
+.tour-btn.active { background: rgba(255,255,255,.2); color: #fff; }
+
+/* simulate button */
+.sim-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 8px 20px;
+  background: #fff;
+  color: var(--clay);
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: .4px;
+  text-transform: uppercase;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: .15s;
+  box-shadow: 0 2px 8px rgba(0,0,0,.15);
+  white-space: nowrap;
+}
+[data-theme="dark"] .sim-btn { background: var(--clay); color: #fff; }
+.sim-btn:hover { transform: translateY(-1px); box-shadow: 0 4px 16px rgba(0,0,0,.2); }
+.sim-btn:disabled { opacity: .4; pointer-events: none; transform: none; }
+
+/* ── Tab nav bar ──────────────────────────────────────────────────────── */
+.tab-nav {
+  flex-shrink: 0;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  transition: background .3s;
+}
+.tab-nav-inner {
+  display: flex;
+  padding: 0 28px;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.tab-nav-inner::-webkit-scrollbar { display: none; }
+.tab-btn {
+  padding: 14px 18px 13px;
+  background: transparent;
+  border: none;
+  border-bottom: 3px solid transparent;
+  color: var(--muted);
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: color .15s, border-color .15s;
+  margin-bottom: -1px;
+}
+.tab-btn:hover { color: var(--text); }
+.tab-btn.active { color: var(--clay); border-bottom-color: var(--clay); }
+
+/* ── Content & panels ────────────────────────────────────────────────── */
+#content {
+  flex: 1;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  position: relative;
+}
+.tab-panel { flex:1; overflow:auto; display:none; min-height:0; flex-direction:column; }
+.tab-panel.active { display:flex; }
+
+/* Error bar */
+#err-box { display:none; background:rgba(192,57,43,.08); border-bottom:1px solid rgba(192,57,43,.2); color:#c0392b; font-size:12px; padding:9px 28px; flex-shrink:0; }
+#err-box.on { display:block; }
+
+/* Spinner */
+#spinner { display:none; position:absolute; inset:0; background:rgba(245,240,232,.85); backdrop-filter:blur(6px); z-index:200; flex-direction:column; align-items:center; justify-content:center; gap:16px; }
+[data-theme="dark"] #spinner { background:rgba(16,14,11,.85); }
+#spinner.on { display:flex; }
+.spin-ring { width:38px; height:38px; border:2.5px solid rgba(192,57,43,.2); border-top-color:var(--clay); border-radius:50%; animation:spin .7s linear infinite; }
+@keyframes spin { to { transform:rotate(360deg); } }
+.spin-label { font-size:13px; color:var(--muted); font-weight:500; }
+
+/* ════════════════════════════════════════════════════════════════════
+   HOME TAB
+════════════════════════════════════════════════════════════════════ */
+#tab-home { padding:32px 28px 28px; gap:28px; }
+
+/* Favourites hero */
+.section-label {
+  font-size:10px; font-weight:800; letter-spacing:2.5px; text-transform:uppercase;
+  color:var(--clay); margin-bottom:16px;
+}
+
+/* Top-3 cards */
+.fav-top3 {
+  display:grid; grid-template-columns:repeat(3,1fr); gap:12px; margin-bottom:16px;
+}
+.fav-big {
+  background:var(--surface); border:1px solid var(--border); border-radius:12px;
+  padding:20px 18px; display:flex; flex-direction:column; gap:6px;
+  box-shadow:var(--shadow-sm); position:relative; overflow:hidden;
+  transition:box-shadow .2s;
+}
+.fav-big:hover { box-shadow:var(--shadow-md); }
+.fav-big::before {
+  content:''; position:absolute; top:0; left:0; right:0; height:3px;
+  background:var(--clay); border-radius:12px 12px 0 0;
+}
+.fav-big.rank2::before { background:#8C9BB0; }
+.fav-big.rank3::before { background:#B08868; }
+.fav-big-medal { font-size:18px; }
+.fav-big-name { font-size:15px; font-weight:700; color:var(--text); margin-top:4px; }
+.fav-big-pct {
+  font-family:'Playfair Display',serif; font-size:2.6rem; font-weight:900;
+  color:var(--clay); line-height:1;
+}
+.fav-big.rank2 .fav-big-pct { color:#8C9BB0; }
+.fav-big.rank3 .fav-big-pct { color:#B08868; }
+.fav-big-sub { font-size:10px; color:var(--muted); font-weight:500; }
+
+/* Remaining list */
+.fav-rest { display:flex; flex-direction:column; gap:0; background:var(--surface); border:1px solid var(--border); border-radius:10px; box-shadow:var(--shadow-sm); overflow:hidden; }
+.fav-list-row {
+  display:grid; grid-template-columns:32px 1fr 80px 52px;
+  align-items:center; gap:10px; padding:11px 16px;
+  border-bottom:1px solid var(--border); transition:background .12s;
+}
+.fav-list-row:last-child { border-bottom:none; }
+.fav-list-row:hover { background:var(--card2); }
+.fav-num { font-size:12px; font-weight:700; color:var(--muted); text-align:center; }
+.fav-lname { font-size:13px; font-weight:600; }
+.fav-bar-track { height:6px; background:var(--card2); border-radius:3px; overflow:hidden; }
+.fav-bar-fill { height:100%; border-radius:3px; background:var(--clay); width:0; transition:width 1s cubic-bezier(.22,1,.36,1); }
+.fav-lpct { font-size:13px; font-weight:700; color:var(--clay); text-align:right; }
+
+/* Skeleton */
+.skeleton { background:var(--card2); border-radius:6px; animation:pulse 1.4s ease-in-out infinite; }
+@keyframes pulse { 0%,100%{opacity:.5}50%{opacity:1} }
+.sk { height:28px; margin-bottom:10px; }
+
+/* Storylines grid */
+.story-grid { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+@media(max-width:700px){ .story-grid{grid-template-columns:1fr} .fav-top3{grid-template-columns:1fr} }
+.story-card {
+  background:var(--surface); border:1px solid var(--border); border-radius:10px;
+  padding:18px 18px; box-shadow:var(--shadow-sm); transition:box-shadow .2s;
+}
+.story-card:hover { box-shadow:var(--shadow-md); }
+.story-tag { font-size:10px; font-weight:800; letter-spacing:1.5px; text-transform:uppercase; color:var(--clay); margin-bottom:6px; display:flex; align-items:center; gap:6px; }
+.story-title { font-size:14px; font-weight:700; color:var(--text); margin-bottom:6px; line-height:1.3; }
+.story-body { font-size:12px; color:var(--muted); line-height:1.65; }
+
+/* CTA bar */
+.home-cta { display:flex; align-items:center; gap:16px; padding:4px 0 0; }
+.cta-primary {
+  display:inline-flex; align-items:center; gap:8px;
+  padding:13px 32px; background:var(--clay);
+  color:#fff; font-family:'Inter',sans-serif; font-size:13px; font-weight:800;
+  letter-spacing:.5px; text-transform:uppercase; border:none; border-radius:8px;
+  cursor:pointer; transition:.2s; box-shadow:0 4px 16px rgba(192,57,43,.3);
+}
+.cta-primary:hover { transform:translateY(-1px); box-shadow:0 6px 24px rgba(192,57,43,.4); }
+.cta-hint { font-size:12px; color:var(--muted); }
+
+/* ════════════════════════════════════════════════════════════════════
+   BRACKET TAB
+════════════════════════════════════════════════════════════════════ */
+#tab-bracket { padding:0; flex-direction:column; }
+
+/* Champion banner */
+#champ-banner {
+  display:none; flex-shrink:0;
+  background:linear-gradient(135deg,var(--clay-d),var(--clay-l));
+  color:#fff; padding:18px 28px; align-items:center; gap:18px; flex-wrap:wrap;
+}
+#champ-banner.on { display:flex; }
+.cb-trophy { font-size:28px; }
+.cb-label { font-size:9px; font-weight:800; letter-spacing:2.5px; text-transform:uppercase; opacity:.75; margin-bottom:2px; }
+.cb-name { font-family:'Playfair Display',serif; font-size:1.7rem; font-weight:900; line-height:1; }
+.cb-path { display:flex; align-items:center; gap:5px; flex-wrap:wrap; margin-top:5px; }
+.cb-step { font-size:11px; opacity:.7; }
+.cb-arrow { font-size:10px; opacity:.4; }
+.cb-beat { font-size:11px; font-weight:700; }
+
+/* Upset bar */
+#upset-bar {
+  display:none; flex-shrink:0;
+  background:rgba(192,57,43,.06); border-bottom:1px solid rgba(192,57,43,.12);
+  padding:10px 28px; align-items:center; gap:10px; flex-wrap:wrap;
+}
+[data-theme="dark"] #upset-bar { background:rgba(231,76,60,.07); border-color:rgba(231,76,60,.15); }
+#upset-bar.on { display:flex; }
+.ub-badge { background:var(--clay); color:#fff; font-size:9px; font-weight:800; letter-spacing:1.5px; text-transform:uppercase; padding:3px 8px; border-radius:4px; }
+.ub-text { font-size:13px; color:var(--text); }
+.ub-text strong { color:var(--clay); }
+
+/* Bracket area */
+#bracket-area { flex:1; overflow:auto; padding:24px 28px 32px; min-height:0; }
+
+.b-empty { display:flex; flex-direction:column; align-items:center; justify-content:center; height:100%; gap:14px; color:var(--muted); text-align:center; }
+.b-empty-icon { font-size:48px; opacity:.2; }
+.b-empty h3 { font-size:16px; font-weight:600; color:var(--text); }
+.b-empty p { font-size:13px; max-width:300px; line-height:1.6; }
+
+#bracket-wrap { display:none; position:relative; }
+#bcanvas { position:absolute; top:0; left:0; pointer-events:none; }
+
+/* Round column */
+.r-col { position:absolute; top:0; opacity:0; transform:translateX(12px); transition:opacity .4s,transform .4s; }
+.r-col.in { opacity:1; transform:none; }
+.r-label { padding:0 0 16px; text-align:center; }
+.r-label-name { font-size:10px; font-weight:800; letter-spacing:2px; text-transform:uppercase; color:var(--muted); display:block; margin-bottom:5px; }
+.r-label-line { display:block; width:20px; height:2px; background:var(--clay); opacity:.4; border-radius:1px; margin:0 auto; }
+
+/* Match card */
+.match-card {
+  position:absolute;
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:7px;
+  overflow:hidden;
+  cursor:pointer;
+  box-shadow:var(--shadow-sm);
+  transition:box-shadow .15s, border-color .15s;
+}
+.match-card:hover { box-shadow:var(--shadow-md); border-color:var(--bhi); z-index:2; }
+
+.p-row {
+  display:flex; align-items:center; padding:0 9px;
+  font-size:12.5px; font-weight:500; color:var(--loser);
+  white-space:nowrap; overflow:hidden; position:relative;
+}
+.p-row::before {
+  content:''; position:absolute; left:0; top:0; bottom:0;
+  width:3px; background:transparent; transition:.2s;
+}
+.p-row.winner {
+  background:var(--winner-bg); color:var(--winner-col);
+  font-weight:700; padding-left:12px;
+}
+.p-row.winner::before { background:var(--winner-col); }
+.p-divider { height:1px; background:var(--border); }
+.p-name { flex:1; overflow:hidden; text-overflow:ellipsis; min-width:0; }
+.p-seed {
+  font-size:9px; font-weight:800; letter-spacing:.3px; flex-shrink:0;
+  color:var(--muted); background:var(--card2);
+  padding:1px 5px; border-radius:3px; line-height:1.6;
+}
+.p-row.winner .p-seed { color:var(--winner-col); background:var(--winner-bg); }
+.p-row.loser  .p-seed { opacity:.5; }
+
+/* Champion card in bracket */
+#bchamp {
+  position:absolute;
+  background:linear-gradient(160deg,var(--clay-d),var(--clay));
+  border-radius:10px; padding:0 14px;
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  text-align:center; gap:5px; color:#fff;
+  opacity:0; transform:scale(.92); transition:opacity .45s,transform .45s;
+  box-shadow:0 4px 20px rgba(192,57,43,.35);
+}
+[data-theme="dark"] #bchamp { background:linear-gradient(160deg,rgba(212,168,67,.25),rgba(212,168,67,.08)); border:1px solid rgba(212,168,67,.3); color:var(--gold); }
+#bchamp.in { opacity:1; transform:scale(1); }
+.bc-trophy { font-size:22px; }
+.bc-label { font-size:8px; font-weight:800; letter-spacing:2px; text-transform:uppercase; opacity:.75; }
+.bc-name { font-family:'Playfair Display',serif; font-size:13px; font-weight:700; line-height:1.2; }
+.bc-photo {
+  width:52px; height:52px; border-radius:50%; margin-bottom:2px;
+  background:rgba(255,255,255,.2) center/cover no-repeat;
+  display:flex; align-items:center; justify-content:center;
+  font-size:16px; font-weight:700; letter-spacing:0; color:#fff;
+  flex-shrink:0;
+}
+
+/* ── Player hover tooltip ─────────────────────────────────────── */
+#player-tooltip {
+  position:fixed; z-index:500;
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:10px;
+  padding:14px;
+  width:200px;
+  box-shadow:var(--shadow-md);
+  pointer-events:none;
+  opacity:0; transform:scale(.96);
+  transition:opacity .15s, transform .15s;
+  display:flex; flex-direction:column; gap:8px;
+}
+#player-tooltip.show { opacity:1; transform:scale(1); }
+.tt-photo {
+  width:60px; height:60px; border-radius:50%;
+  background:var(--card2) center/cover no-repeat;
+  display:flex; align-items:center; justify-content:center;
+  font-size:18px; font-weight:700; color:var(--muted);
+  flex-shrink:0; align-self:center;
+  border:2px solid var(--border);
+}
+.tt-name { font-size:13px; font-weight:700; text-align:center; color:var(--text); line-height:1.2; }
+.tt-flag { font-size:11px; text-align:center; color:var(--muted); }
+.tt-stats { display:flex; flex-direction:column; gap:4px; }
+.tt-stat {
+  display:flex; align-items:center; justify-content:space-between;
+  font-size:11px; color:var(--muted); padding:5px 8px;
+  background:var(--card2); border-radius:5px;
+}
+.tt-stat strong { color:var(--text); font-weight:700; }
+
+/* ── H2H player photo ─────────────────────────────────────────── */
+.h2h-photo {
+  width:72px; height:72px; border-radius:50%;
+  background:var(--card2) center/cover no-repeat;
+  display:flex; align-items:center; justify-content:center;
+  font-size:22px; font-weight:700; color:var(--muted);
+  margin:0 auto 10px; border:2px solid var(--border);
+  transition:background-image .3s;
+}
+
+/* ════════════════════════════════════════════════════════════════════
+   ODDS TAB
+════════════════════════════════════════════════════════════════════ */
+#tab-odds { padding:32px 28px; }
+#odds-empty { display:flex; flex-direction:column; align-items:center; justify-content:center; flex:1; gap:12px; color:var(--muted); text-align:center; }
+#odds-content { display:none; }
+.odds-title { font-family:'Playfair Display',serif; font-size:1.4rem; font-weight:700; margin-bottom:4px; }
+.odds-sub { font-size:12px; color:var(--muted); margin-bottom:28px; }
+.podium { display:flex; justify-content:center; align-items:flex-end; gap:10px; margin-bottom:32px; }
+.pod { flex:1; max-width:188px; border-radius:10px; padding:18px 14px; text-align:center; border:1px solid var(--border); background:var(--surface); box-shadow:var(--shadow-sm); }
+.pod.p1 { padding-bottom:52px; border-top:3px solid var(--clay); }
+.pod.p2 { padding-bottom:36px; border-top:3px solid #8C9BB0; }
+.pod.p3 { padding-bottom:20px; border-top:3px solid #B08868; }
+.pod-medal { font-size:18px; margin-bottom:6px; }
+.pod-name { font-size:13px; font-weight:600; margin-bottom:5px; }
+.pod-pct { font-family:'Playfair Display',serif; font-size:2rem; font-weight:900; }
+.p1 .pod-pct { color:var(--clay); }
+.p2 .pod-pct { color:#8C9BB0; }
+.p3 .pod-pct { color:#B08868; }
+.pod-sub { font-size:10px; color:var(--muted); margin-top:3px; }
+.list-head { font-size:10px; font-weight:800; letter-spacing:2px; text-transform:uppercase; color:var(--muted); margin-bottom:14px; }
+.bar-row { display:grid; grid-template-columns:130px 1fr 52px; align-items:center; gap:12px; margin-bottom:9px; }
+.bar-name { font-size:13px; font-weight:500; text-align:right; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.bar-track { height:26px; background:var(--card2); border-radius:5px; overflow:hidden; border:1px solid var(--border); }
+.bar-fill { height:100%; border-radius:5px; width:0; background:linear-gradient(90deg,var(--clay-d),var(--clay-l)); transition:width 1s cubic-bezier(.22,1,.36,1); }
+.bar-pct { font-size:13px; font-weight:700; color:var(--clay); }
+
+/* ════════════════════════════════════════════════════════════════════
+   H2H TAB
+════════════════════════════════════════════════════════════════════ */
+#tab-h2h { align-items:center; justify-content:center; padding:36px 28px; }
+.h2h-wrap { width:100%; max-width:640px; }
+.h2h-title { font-family:'Playfair Display',serif; font-size:1.5rem; font-weight:700; margin-bottom:4px; }
+.h2h-sub { font-size:13px; color:var(--muted); margin-bottom:28px; line-height:1.6; }
+.h2h-pickers { display:grid; grid-template-columns:1fr auto 1fr; align-items:center; gap:16px; margin-bottom:20px; }
+.h2h-vs { font-family:'Playfair Display',serif; font-size:1.1rem; font-weight:700; color:var(--muted); text-align:center; }
+/* Searchable player input */
+.player-search { position:relative; width:100%; }
+.player-input {
+  width:100%; padding:11px 36px 11px 14px;
+  background:var(--surface); border:1.5px solid var(--border);
+  border-radius:9px; color:var(--text);
+  font-family:'Inter',sans-serif; font-size:13px; font-weight:500;
+  transition:.15s; box-shadow:var(--shadow-sm);
+}
+.player-input::placeholder { color:var(--muted); }
+.player-input:focus { outline:none; border-color:var(--clay); }
+.player-input-clear {
+  position:absolute; right:10px; top:50%; transform:translateY(-50%);
+  background:none; border:none; color:var(--muted); font-size:16px;
+  cursor:pointer; line-height:1; padding:2px 4px; display:none;
+}
+.player-input-clear.show { display:block; }
+.player-input-clear:hover { color:var(--text); }
+.player-dropdown {
+  position:absolute; top:calc(100% + 4px); left:0; right:0; z-index:50;
+  background:var(--surface); border:1.5px solid var(--clay);
+  border-radius:9px; overflow:hidden;
+  box-shadow:var(--shadow-md); display:none; max-height:220px; overflow-y:auto;
+}
+.player-dropdown.open { display:block; }
+.player-option {
+  padding:10px 14px; font-size:13px; font-weight:500; cursor:pointer;
+  transition:background .1s;
+}
+.player-option:hover, .player-option.focused { background:var(--card2); color:var(--clay); }
+.player-option mark { background:transparent; color:var(--clay); font-weight:700; }
+.h2h-actions { display:flex; justify-content:center; margin-bottom:24px; }
+.predict-btn {
+  padding:12px 40px;
+  background:var(--clay); color:#fff;
+  font-family:'Inter',sans-serif; font-size:13px; font-weight:700;
+  border:none; border-radius:9px; cursor:pointer; transition:.15s;
+  box-shadow:0 2px 12px rgba(192,57,43,.3);
+  letter-spacing:.3px;
+}
+.predict-btn:hover { transform:translateY(-1px); box-shadow:0 4px 20px rgba(192,57,43,.4); }
+#h2h-result { display:none; background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:28px; flex-direction:column; gap:20px; box-shadow:var(--shadow-sm); }
+#h2h-result.on { display:flex; }
+.h2h-players { display:grid; grid-template-columns:1fr auto 1fr; align-items:center; gap:16px; }
+.h2h-player { text-align:center; }
+.h2h-player-name { font-size:14px; font-weight:700; margin-bottom:6px; }
+.h2h-player-pct { font-family:'Playfair Display',serif; font-size:2.8rem; font-weight:900; color:var(--muted); line-height:1; }
+.h2h-player.fav .h2h-player-pct { color:var(--clay); }
+.h2h-sep { font-family:'Playfair Display',serif; font-size:1rem; color:var(--muted); text-align:center; }
+.h2h-bar-wrap { height:10px; background:var(--card2); border-radius:5px; overflow:hidden; border:1px solid var(--border); }
+.h2h-bar-a { height:100%; background:linear-gradient(90deg,var(--clay-d),var(--clay-l)); width:0; transition:width .8s cubic-bezier(.22,1,.36,1); border-radius:5px; }
+.h2h-insight { font-size:13px; color:var(--muted); text-align:center; line-height:1.65; font-style:italic; padding:0 16px; }
+
+/* H2H history */
+.h2h-history { display:flex; flex-direction:column; gap:10px; border-top:1px solid var(--border); padding-top:18px; }
+.h2h-hist-head { font-size:10px; font-weight:800; letter-spacing:2px; text-transform:uppercase; color:var(--muted); }
+.h2h-badges { display:flex; gap:8px; flex-wrap:wrap; }
+.h2h-badge {
+  display:flex; align-items:center; gap:8px;
+  background:var(--card2); border:1px solid var(--border); border-radius:8px; padding:10px 14px;
+  font-size:13px;
+}
+.h2h-badge-label { font-size:10px; color:var(--muted); margin-bottom:2px; }
+.h2h-score { font-family:'Playfair Display',serif; font-size:1.3rem; font-weight:700; color:var(--text); letter-spacing:1px; }
+.h2h-score .leader { color:var(--clay); }
+[data-theme="dark"] .h2h-score .leader { color:var(--gold); }
+.h2h-matches { display:flex; flex-direction:column; gap:5px; }
+.h2h-match-row {
+  display:grid; grid-template-columns:80px 1fr 80px;
+  align-items:center; gap:8px; font-size:12px;
+  padding:7px 10px; border-radius:6px; background:var(--card2);
+}
+.h2h-match-date { color:var(--muted); font-size:11px; }
+.h2h-match-winner { font-weight:700; color:var(--text); }
+.h2h-match-surface {
+  font-size:10px; font-weight:700; padding:2px 7px; border-radius:4px; text-align:center;
+  letter-spacing:.5px;
+}
+.surf-clay  { background:rgba(192,57,43,.12); color:var(--clay); }
+.surf-hard  { background:rgba(50,100,200,.1);  color:#5080d0; }
+.surf-grass { background:rgba(39,174,96,.1);   color:#27ae60; }
+.h2h-no-history { font-size:12px; color:var(--muted); font-style:italic; }
+
+/* ════════════════════════════════════════════════════════════════════
+   COMPARE TAB
+════════════════════════════════════════════════════════════════════ */
+#tab-compare { padding:32px 28px; }
+.compare-hdr { display:flex; align-items:flex-start; justify-content:space-between; flex-wrap:wrap; gap:16px; margin-bottom:8px; }
+.compare-title { font-family:'Playfair Display',serif; font-size:1.4rem; font-weight:700; }
+.compare-sub { font-size:13px; color:var(--muted); line-height:1.6; margin-bottom:24px; max-width:520px; }
+.run-cmp-btn { padding:10px 22px; background:var(--surface); border:1.5px solid var(--border); border-radius:8px; color:var(--text); font-family:'Inter',sans-serif; font-size:13px; font-weight:600; cursor:pointer; transition:.15s; box-shadow:var(--shadow-sm); white-space:nowrap; flex-shrink:0; }
+.run-cmp-btn:hover { border-color:var(--clay); color:var(--clay); }
+#compare-empty { color:var(--muted); text-align:center; padding:40px 0; font-size:13px; }
+#compare-results { display:none; grid-template-columns:1fr 1fr; gap:16px; }
+#compare-results.on { display:grid; }
+.sim-card { background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:22px; box-shadow:var(--shadow-sm); }
+.sim-card-label { font-size:10px; font-weight:800; letter-spacing:2px; text-transform:uppercase; color:var(--muted); margin-bottom:14px; }
+.sim-champ { display:flex; align-items:center; gap:10px; margin-bottom:4px; }
+.sim-trophy { font-size:22px; }
+.sim-name { font-family:'Playfair Display',serif; font-size:1.25rem; font-weight:700; color:var(--clay); }
+[data-theme="dark"] .sim-name { color:var(--gold); }
+.sim-final { font-size:12px; color:var(--muted); margin-bottom:14px; }
+.sim-final strong { color:var(--text); }
+.sim-section { font-size:10px; font-weight:800; letter-spacing:1.5px; text-transform:uppercase; color:var(--muted); margin-bottom:8px; margin-top:14px; }
+.sim-sf-row { display:flex; align-items:center; gap:6px; font-size:13px; margin-bottom:5px; }
+.sim-sf-w { font-weight:700; }
+.sim-sf-l { color:var(--muted); }
+.sim-path { font-size:11px; color:var(--muted); line-height:1.7; margin-top:4px; }
+.sim-upset { background:rgba(192,57,43,.05); border:1px solid rgba(192,57,43,.12); border-radius:7px; padding:10px 12px; margin-top:14px; }
+.sim-upset-lbl { font-size:9px; font-weight:800; letter-spacing:1.5px; text-transform:uppercase; color:var(--clay); margin-bottom:4px; }
+.sim-upset-txt { font-size:12px; color:var(--text); }
+
+/* ════════════════════════════════════════════════════════════════════
+   PLAYER OVERLAY
+════════════════════════════════════════════════════════════════════ */
+#player-overlay {
+  position:fixed; top:0; right:0; bottom:0; width:290px;
+  background:var(--surface); border-left:1px solid var(--border);
+  z-index:300; display:flex; flex-direction:column;
+  transform:translateX(100%); transition:transform .28s cubic-bezier(.4,0,.2,1);
+  box-shadow:-4px 0 24px rgba(0,0,0,.1);
+}
+#player-overlay.open { transform:translateX(0); }
+.po-header {
+  display:flex; align-items:center; justify-content:space-between;
+  padding:18px 20px; border-bottom:1px solid var(--border);
+}
+.po-name { font-family:'Playfair Display',serif; font-size:1.1rem; font-weight:700; }
+.po-close { background:none; border:none; color:var(--muted); font-size:22px; cursor:pointer; line-height:1; padding:2px 6px; border-radius:4px; }
+.po-close:hover { background:var(--card2); color:var(--text); }
+.po-body { padding:20px; display:flex; flex-direction:column; gap:12px; overflow:auto; }
+.po-stat { background:var(--card2); border:1px solid var(--border); border-radius:9px; padding:14px 16px; }
+.po-stat-label { font-size:10px; font-weight:800; letter-spacing:1.5px; text-transform:uppercase; color:var(--muted); margin-bottom:5px; }
+.po-stat-val { font-family:'Playfair Display',serif; font-size:1.7rem; font-weight:700; }
+.po-stat-sub { font-size:11px; color:var(--muted); margin-top:3px; }
+.po-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+.po-note { font-size:11px; color:var(--muted); line-height:1.65; }
+
+/* ── Save button in champion banner ──────────────────────────────── */
+.save-btn {
+  flex-shrink:0; display:inline-flex; align-items:center; gap:6px;
+  padding:8px 18px; background:rgba(255,255,255,.2);
+  color:#fff; font-family:'Inter',sans-serif; font-size:12px; font-weight:700;
+  border:1px solid rgba(255,255,255,.35); border-radius:8px;
+  cursor:pointer; transition:.15s; white-space:nowrap;
+}
+.save-btn:hover { background:rgba(255,255,255,.3); }
+.save-btn.saved { background:rgba(255,255,255,.15); opacity:.7; pointer-events:none; }
+
+/* ── Saved tab ────────────────────────────────────────────────────── */
+#tab-saved { padding:32px 28px; gap:20px; }
+.saved-hdr { display:flex; align-items:flex-start; justify-content:space-between; flex-wrap:wrap; gap:12px; }
+.saved-title { font-family:'Playfair Display',serif; font-size:1.4rem; font-weight:700; }
+.saved-sub { font-size:13px; color:var(--muted); margin-top:4px; max-width:480px; line-height:1.5; }
+.clear-btn { padding:8px 16px; background:transparent; border:1.5px solid var(--border); border-radius:8px; color:var(--muted); font-family:'Inter',sans-serif; font-size:12px; font-weight:600; cursor:pointer; transition:.15s; flex-shrink:0; }
+.clear-btn:hover { border-color:var(--clay); color:var(--clay); }
+.saved-empty { display:flex; flex-direction:column; align-items:center; justify-content:center; flex:1; gap:10px; color:var(--muted); text-align:center; padding:40px 0; }
+.saved-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(260px,1fr)); gap:14px; }
+
+/* Saved prediction card */
+.sv-card {
+  background:var(--surface); border:1px solid var(--border); border-radius:12px;
+  overflow:hidden; box-shadow:var(--shadow-sm); display:flex; flex-direction:column;
+  transition:box-shadow .2s;
+}
+.sv-card:hover { box-shadow:var(--shadow-md); }
+.sv-card-top {
+  height:4px;
+  background:linear-gradient(90deg,var(--clay-d),var(--clay-l));
+}
+.sv-card-top.wta { background:linear-gradient(90deg,#6b21a8,#a855f7); }
+.sv-card-body { padding:16px 18px; flex:1; display:flex; flex-direction:column; gap:10px; }
+.sv-meta { display:flex; align-items:center; justify-content:space-between; }
+.sv-tour { font-size:10px; font-weight:800; letter-spacing:1.5px; text-transform:uppercase; color:var(--clay); }
+.sv-tour.wta { color:#a855f7; }
+[data-theme="dark"] .sv-tour.wta { color:#c084fc; }
+.sv-date { font-size:11px; color:var(--muted); }
+.sv-champion { display:flex; align-items:center; gap:10px; }
+.sv-champ-photo {
+  width:38px; height:38px; border-radius:50%; flex-shrink:0;
+  background:var(--card2) center/cover no-repeat;
+  display:flex; align-items:center; justify-content:center;
+  font-size:11px; font-weight:700; color:var(--muted);
+  border:1px solid var(--border);
+}
+.sv-champ-name { font-family:'Playfair Display',serif; font-size:1.1rem; font-weight:700; color:var(--text); line-height:1.1; }
+.sv-finalist { font-size:12px; color:var(--muted); }
+.sv-finalist strong { color:var(--text); }
+.sv-upset { font-size:11px; background:rgba(192,57,43,.06); border:1px solid rgba(192,57,43,.12); border-radius:6px; padding:6px 10px; color:var(--clay); }
+.sv-result { display:flex; flex-direction:column; gap:3px; border-top:1px solid var(--border); padding-top:10px; }
+.sv-result-row { display:flex; align-items:center; gap:6px; font-size:12px; }
+.sv-tick { font-size:13px; }
+.sv-actions { display:flex; gap:8px; padding:12px 18px; border-top:1px solid var(--border); background:var(--card2); }
+.sv-load { flex:1; padding:8px; background:var(--clay); color:#fff; font-family:'Inter',sans-serif; font-size:12px; font-weight:700; border:none; border-radius:7px; cursor:pointer; transition:.15s; }
+.sv-load:hover { opacity:.9; }
+.sv-del { padding:8px 14px; background:transparent; border:1px solid var(--border); border-radius:7px; color:var(--muted); font-family:'Inter',sans-serif; font-size:12px; cursor:pointer; transition:.15s; }
+.sv-del:hover { border-color:var(--clay); color:var(--clay); }
+
+/* ── Share modal ─────────────────────────────────────────────────── */
+#share-overlay {
+  position:fixed; inset:0; z-index:500;
+  background:rgba(0,0,0,.65); backdrop-filter:blur(6px);
+  display:flex; align-items:center; justify-content:center;
+  opacity:0; pointer-events:none; transition:opacity .25s;
+}
+#share-overlay.open { opacity:1; pointer-events:all; }
+.share-box {
+  background:var(--surface); border:1px solid var(--border);
+  border-radius:14px; width:520px; max-width:95vw;
+  padding:22px; box-shadow:0 24px 64px rgba(0,0,0,.45);
+  display:flex; flex-direction:column; gap:16px;
+}
+.share-hdr { display:flex; align-items:center; justify-content:space-between; }
+.share-title { font-size:15px; font-weight:700; }
+.share-close { background:none; border:none; color:var(--muted); font-size:22px; cursor:pointer; line-height:1; padding:2px 6px; border-radius:4px; }
+.share-close:hover { background:var(--card2); color:var(--text); }
+.share-preview { border-radius:8px; overflow:hidden; border:1px solid var(--border); }
+.share-preview canvas { width:100%; height:auto; display:block; }
+.share-actions { display:flex; gap:10px; }
+.share-dl-btn {
+  flex:1; padding:11px; background:var(--clay); color:#fff;
+  font-family:'Inter',sans-serif; font-size:13px; font-weight:700;
+  border:none; border-radius:8px; cursor:pointer; transition:.15s;
+}
+.share-dl-btn:hover { opacity:.9; }
+.share-link-btn {
+  flex:1; padding:11px; background:var(--card2); color:var(--text);
+  font-family:'Inter',sans-serif; font-size:13px; font-weight:600;
+  border:1px solid var(--border); border-radius:8px; cursor:pointer; transition:.15s;
+}
+.share-link-btn:hover { border-color:var(--clay); color:var(--clay); }
+.share-quip {
+  background:var(--card2); border:1px solid var(--border); border-radius:9px;
+  padding:13px 16px; font-size:12.5px; color:var(--muted); line-height:1.65;
+  font-style:italic;
+}
+.share-quip strong { color:var(--text); font-style:normal; }
+
+/* ── Toast notification ───────────────────────────────────────────── */
+#toast {
+  position:fixed; bottom:24px; left:50%; transform:translateX(-50%) translateY(12px);
+  background:var(--text); color:var(--surface);
+  font-size:13px; font-weight:600; padding:10px 22px; border-radius:24px;
+  opacity:0; transition:opacity .25s, transform .25s; pointer-events:none; z-index:600;
+  white-space:nowrap;
+}
+#toast.show { opacity:1; transform:translateX(-50%) translateY(0); }
+
+/* ── Footer ──────────────────────────────────────────────────────── */
+footer {
+  flex-shrink:0; display:flex; align-items:center; justify-content:space-between;
+  padding:0 28px; height:36px; border-top:1px solid var(--border);
+  font-size:10px; color:var(--muted); background:var(--surface);
+  transition:background .3s;
+}
+
+/* ════════════════════════════════════════════════════════════════════
+   MY PICKS TAB
+════════════════════════════════════════════════════════════════════ */
+#tab-picks { padding:0; overflow:hidden; }
+
+.picks-hdr {
+  flex-shrink:0; padding:20px 28px 0;
+  display:flex; align-items:flex-start; justify-content:space-between; gap:16px; flex-wrap:wrap;
+}
+.picks-title { font-family:'Playfair Display',serif; font-size:1.4rem; font-weight:700; margin-bottom:4px; }
+.picks-sub { font-size:12px; color:var(--muted); max-width:380px; line-height:1.5; }
+.picks-hdr-btns { display:flex; gap:8px; align-items:center; flex-shrink:0; margin-top:4px; }
+.picks-reset-btn {
+  padding:8px 16px; background:transparent; border:1.5px solid var(--border);
+  border-radius:8px; color:var(--muted); font-family:'Inter',sans-serif;
+  font-size:12px; font-weight:600; cursor:pointer; transition:.15s;
+}
+.picks-reset-btn:hover { border-color:var(--clay); color:var(--clay); }
+.picks-share-btn {
+  padding:8px 18px; background:var(--clay); border:none;
+  border-radius:8px; color:#fff; font-family:'Inter',sans-serif;
+  font-size:12px; font-weight:700; cursor:pointer; transition:.15s;
+}
+.picks-share-btn:disabled { opacity:.35; pointer-events:none; }
+.picks-share-btn:not(:disabled):hover { opacity:.88; }
+
+.picks-rnav {
+  flex-shrink:0; display:flex; gap:6px; padding:14px 28px 0;
+  overflow-x:auto; scrollbar-width:none;
+}
+.picks-rnav::-webkit-scrollbar { display:none; }
+.picks-rtab {
+  padding:5px 13px; border-radius:20px; font-size:11.5px; font-weight:600;
+  border:1.5px solid var(--border); background:transparent;
+  color:var(--muted); cursor:pointer; white-space:nowrap; transition:.15s; line-height:1.5;
+}
+.picks-rtab:hover { border-color:var(--bhi); color:var(--text); }
+.picks-rtab.active { background:var(--clay); color:#fff; border-color:var(--clay); }
+.picks-rtab.complete { border-color:var(--clay); color:var(--clay); }
+.picks-rtab.complete.active { background:var(--clay); color:#fff; }
+
+.picks-prog-bar {
+  flex-shrink:0; display:flex; align-items:center; gap:10px; padding:10px 28px 0;
+}
+.picks-prog-track { flex:1; height:3px; background:var(--card2); border-radius:2px; overflow:hidden; }
+.picks-prog-fill { height:100%; border-radius:2px; background:var(--clay); transition:width .4s ease; }
+.picks-prog-label {
+  font-size:11px; color:var(--muted); font-weight:600;
+  white-space:nowrap; min-width:90px; text-align:right;
+}
+
+.picks-sep { flex-shrink:0; height:1px; background:var(--border); margin:12px 0 0; }
+
+.picks-area { flex:1; overflow:auto; padding:16px 28px 32px; min-height:0; }
+
+.picks-match-grid { display:grid; grid-template-columns:1fr 1fr; gap:8px; }
+.picks-match-grid.one-col { grid-template-columns:1fr; max-width:380px; margin:0 auto; }
+@media(max-width:600px){ .picks-match-grid { grid-template-columns:1fr; } }
+
+.pick-card {
+  background:var(--surface); border:1.5px solid var(--border);
+  border-radius:8px; overflow:hidden; transition:border-color .15s;
+}
+.pick-card.complete { border-color:rgba(192,57,43,.4); }
+.pick-card.tbd { opacity:.45; pointer-events:none; }
+
+.pick-row {
+  display:flex; align-items:center; gap:8px;
+  padding:8px 12px; font-size:12.5px; font-weight:500;
+  cursor:pointer; transition:background .1s, color .1s; color:var(--text); min-height:36px;
+}
+.pick-row:hover:not(.is-winner):not(.is-loser):not(.is-tbd) {
+  background:rgba(192,57,43,.06); color:var(--clay);
+}
+.pick-row.is-winner { background:var(--winner-bg); color:var(--winner-col); font-weight:700; }
+.pick-row.is-loser  { color:var(--loser); }
+.pick-row.is-tbd    { color:var(--muted); font-style:italic; cursor:default; pointer-events:none; }
+.pick-row-name { flex:1; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.pick-row-seed {
+  font-size:9px; font-weight:800; letter-spacing:.3px; flex-shrink:0;
+  color:var(--muted); background:var(--card2); padding:1px 5px; border-radius:3px; line-height:1.6;
+}
+.pick-row.is-winner .pick-row-seed { color:var(--winner-col); background:var(--winner-bg); }
+.pick-row.is-loser  .pick-row-seed { opacity:.35; }
+.pick-divider { height:1px; background:var(--border); }
+
+.picks-champ-reveal {
+  display:none; flex-direction:column; align-items:center;
+  gap:10px; padding:28px 0 4px; text-align:center;
+}
+.picks-champ-reveal.show { display:flex; }
+.picks-champ-photo {
+  width:88px; height:88px; border-radius:50%;
+  background:var(--card2) center/cover no-repeat;
+  display:flex; align-items:center; justify-content:center;
+  font-size:24px; font-weight:700; color:var(--muted);
+  border:3px solid var(--clay); margin-bottom:4px;
+}
+.picks-champ-trophy { font-size:38px; }
+.picks-champ-lbl {
+  font-size:10px; font-weight:800; letter-spacing:2.5px;
+  text-transform:uppercase; color:var(--clay);
+}
+.picks-champ-name { font-family:'Playfair Display',serif; font-size:2rem; font-weight:900; }
+.picks-champ-actions { display:flex; gap:10px; margin-top:6px; }
+.picks-champ-btn {
+  padding:10px 22px; border-radius:8px; font-family:'Inter',sans-serif;
+  font-size:12px; font-weight:700; cursor:pointer; transition:.15s; border:none;
+}
+.picks-champ-btn.primary   { background:var(--clay); color:#fff; }
+.picks-champ-btn.secondary { background:var(--card2); color:var(--text); border:1.5px solid var(--border); }
+.picks-champ-btn:hover { opacity:.88; }
+
+.picks-loading {
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  flex:1; gap:10px; color:var(--muted); text-align:center; padding:40px 0;
+}
+
+/* Flag, probability % and bar */
+.pick-row-flag { font-size:13px; flex-shrink:0; line-height:1; }
+.pick-row-prob {
+  font-size:11px; font-weight:700; color:var(--muted);
+  flex-shrink:0; min-width:34px; text-align:right;
+}
+.pick-row.is-winner .pick-row-prob { color:var(--winner-col); }
+.pick-row.is-loser  .pick-row-prob { opacity:.45; }
+/* Replaces the plain divider when model probs are loaded */
+.pick-prob-wrap { height:3px; background:var(--card2); flex-shrink:0; }
+.pick-prob-fill {
+  height:100%;
+  background:linear-gradient(90deg,var(--clay-d),var(--clay-l));
+  width:0; transition:width .6s cubic-bezier(.22,1,.36,1);
+}
+
+/* Auto-pick favourites bar */
+.picks-actions {
+  flex-shrink:0; display:flex; align-items:center; gap:10px; padding:4px 28px 2px;
+}
+.picks-auto-btn {
+  padding:4px 13px; border:1.5px solid var(--border); border-radius:20px;
+  background:transparent; color:var(--text); font-family:'Inter',sans-serif;
+  font-size:11.5px; font-weight:600; cursor:pointer; transition:.15s; white-space:nowrap;
+}
+.picks-auto-btn:hover { border-color:var(--clay); color:var(--clay); }
+.picks-auto-hint { font-size:11px; color:var(--muted); }
+  </style>
+</head>
+<body>
+
+<!-- ── Header ── -->
+<header>
+  <span class="logo">Drop Shot</span>
+  <span class="logo-sub">Roland-Garros 2026 Predictions</span>
+  <div class="hdr-right">
+    <button class="dark-toggle" id="dark-toggle" onclick="toggleDark()" title="Toggle dark mode">🌙</button>
+    <div class="tour-toggle">
+      <button class="tour-btn active" id="btn-atp" onclick="setTour('atp')">ATP</button>
+      <button class="tour-btn" id="btn-wta" onclick="setTour('wta')">WTA</button>
+    </div>
+    <button class="sim-btn" id="sim-btn" onclick="handleSimulate()">
+      <svg width="9" height="11" viewBox="0 0 9 11"><polygon points="0,0 9,5.5 0,11" fill="currentColor"/></svg>
+      Simulate
+    </button>
+  </div>
+</header>
+
+<!-- ── Tab nav ── -->
+<nav class="tab-nav">
+  <div class="tab-nav-inner">
+    <button class="tab-btn active" data-tab="home">Home</button>
+    <button class="tab-btn" data-tab="bracket">Bracket</button>
+    <button class="tab-btn" data-tab="odds">Odds</button>
+    <button class="tab-btn" data-tab="h2h">Head to Head</button>
+    <button class="tab-btn" data-tab="compare">Compare</button>
+    <button class="tab-btn" data-tab="saved" id="saved-tab-btn">Saved</button>
+    <button class="tab-btn" data-tab="picks" id="picks-tab-btn">My Picks</button>
+  </div>
+</nav>
+
+<div id="err-box"></div>
+
+<div id="content">
+  <!-- Spinner -->
+  <div id="spinner">
+    <div class="spin-ring"></div>
+    <span class="spin-label" id="spin-msg">Simulating…</span>
+  </div>
+
+  <!-- ══ HOME ══ -->
+  <div id="tab-home" class="tab-panel active">
+
+    <!-- Favourites -->
+    <div>
+      <div class="section-label">Tournament Favourites</div>
+      <div class="fav-top3" id="fav-top3">
+        <div class="skeleton" style="height:130px;border-radius:12px"></div>
+        <div class="skeleton" style="height:130px;border-radius:12px"></div>
+        <div class="skeleton" style="height:130px;border-radius:12px"></div>
+      </div>
+      <div class="fav-rest" id="fav-rest">
+        <div class="fav-list-row"><div class="skeleton" style="height:16px;grid-column:1/-1"></div></div>
+        <div class="fav-list-row"><div class="skeleton" style="height:16px;grid-column:1/-1"></div></div>
+        <div class="fav-list-row"><div class="skeleton" style="height:16px;grid-column:1/-1"></div></div>
+        <div class="fav-list-row"><div class="skeleton" style="height:16px;grid-column:1/-1"></div></div>
+        <div class="fav-list-row"><div class="skeleton" style="height:16px;grid-column:1/-1"></div></div>
+      </div>
+    </div>
+
+    <!-- CTA -->
+    <div class="home-cta">
+      <button class="cta-primary" onclick="handleSimulate()">
+        <svg width="10" height="12" viewBox="0 0 10 12"><polygon points="0,0 10,6 0,12" fill="white"/></svg>
+        Simulate the Tournament
+      </button>
+      <span class="cta-hint">Each run is unique — just like the real draw</span>
+    </div>
+
+    <!-- Storylines -->
+    <div>
+      <div class="section-label">Key Storylines</div>
+      <div class="story-grid" id="story-grid">
+        <div class="skeleton" style="height:110px;border-radius:10px"></div>
+        <div class="skeleton" style="height:110px;border-radius:10px"></div>
+        <div class="skeleton" style="height:110px;border-radius:10px"></div>
+        <div class="skeleton" style="height:110px;border-radius:10px"></div>
+      </div>
+    </div>
+
+  </div><!-- tab-home -->
+
+  <!-- ══ BRACKET ══ -->
+  <div id="tab-bracket" class="tab-panel" style="flex-direction:column">
+    <div id="bracket-top" style="flex-shrink:0">
+      <div id="champ-banner">
+        <span class="cb-trophy">🏆</span>
+        <div style="flex:1">
+          <div class="cb-label">Champion · Roland-Garros 2026</div>
+          <div class="cb-name" id="cb-name"></div>
+          <div class="cb-path" id="cb-path"></div>
+        </div>
+        <button class="save-btn" id="save-btn" onclick="savePrediction()" style="display:none">💾 Save</button>
+        <button class="save-btn" id="share-btn" onclick="openShare()" style="display:none">📤 Share</button>
+      </div>
+      <div id="upset-bar">
+        <span class="ub-badge">⚡ Biggest Upset</span>
+        <span class="ub-text" id="ub-text"></span>
+      </div>
+    </div>
+    <div id="bracket-area">
+      <div class="b-empty" id="b-empty">
+        <div class="b-empty-icon">🎾</div>
+        <h3>No prediction yet</h3>
+        <p>Click <strong>Simulate</strong> to generate a unique bracket. R128 and R64 are run silently — you see Round of 32 onwards.</p>
+      </div>
+      <div id="bracket-wrap"><canvas id="bcanvas"></canvas></div>
+    </div>
+  </div>
+
+  <!-- ══ ODDS ══ -->
+  <div id="tab-odds" class="tab-panel">
+    <div id="odds-empty">
+      <div style="font-size:44px;opacity:.2">📊</div>
+      <p style="font-size:15px;font-weight:600">No data yet</p>
+      <p style="font-size:13px">Click Simulate to run 10,000 Monte Carlo simulations.</p>
+    </div>
+    <div id="odds-content">
+      <div class="odds-title" id="odds-title"></div>
+      <div class="odds-sub">10,000 Monte Carlo simulations · Clay-court Elo model</div>
+      <div class="podium" id="podium"></div>
+      <div class="list-head">Full leaderboard</div>
+      <div id="bar-list"></div>
+    </div>
+  </div>
+
+  <!-- ══ H2H ══ -->
+  <div id="tab-h2h" class="tab-panel">
+    <div class="h2h-wrap">
+      <div class="h2h-title">Head to Head</div>
+      <div class="h2h-sub">Pick any two players from the 2026 Roland-Garros draw and see what my clay-court model predicts on this surface.</div>
+      <div class="h2h-pickers">
+        <div class="player-search" id="search-a">
+          <input class="player-input" id="h2h-a" placeholder="Search player…" autocomplete="off" spellcheck="false"/>
+          <button class="player-input-clear" id="clear-a" onclick="clearSearch('a')">×</button>
+          <div class="player-dropdown" id="drop-a"></div>
+        </div>
+        <div class="h2h-vs">vs</div>
+        <div class="player-search" id="search-b">
+          <input class="player-input" id="h2h-b" placeholder="Search player…" autocomplete="off" spellcheck="false"/>
+          <button class="player-input-clear" id="clear-b" onclick="clearSearch('b')">×</button>
+          <div class="player-dropdown" id="drop-b"></div>
+        </div>
+      </div>
+      <div class="h2h-actions">
+        <button class="predict-btn" onclick="runH2H()">Predict Match</button>
+      </div>
+      <div id="h2h-result">
+        <div class="h2h-players">
+          <div class="h2h-player" id="h2h-pa">
+            <div class="h2h-photo" id="h2h-photo-a"></div>
+            <div class="h2h-player-name" id="h2h-pa-name"></div>
+            <div class="h2h-player-pct" id="h2h-pa-pct"></div>
+          </div>
+          <div class="h2h-sep">vs</div>
+          <div class="h2h-player" id="h2h-pb">
+            <div class="h2h-photo" id="h2h-photo-b"></div>
+            <div class="h2h-player-name" id="h2h-pb-name"></div>
+            <div class="h2h-player-pct" id="h2h-pb-pct"></div>
+          </div>
+        </div>
+        <div class="h2h-bar-wrap"><div class="h2h-bar-a" id="h2h-bar"></div></div>
+        <div class="h2h-insight" id="h2h-insight"></div>
+        <div class="h2h-history" id="h2h-history" style="display:none">
+          <div class="h2h-hist-head">Head-to-Head History</div>
+          <div class="h2h-badges" id="h2h-badges"></div>
+          <div class="h2h-matches" id="h2h-matches"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ COMPARE ══ -->
+  <div id="tab-compare" class="tab-panel">
+    <div class="compare-hdr">
+      <div class="compare-title">Compare Two Simulations</div>
+      <button class="run-cmp-btn" onclick="runCompare()">Run Comparison</button>
+    </div>
+    <div class="compare-sub">Two independent runs of the same draw. Shows how much variance exists in a single tournament — and why upsets are always possible.</div>
+    <div id="compare-empty">Click <strong>Run Comparison</strong> above to generate two parallel predictions.</div>
+    <div id="compare-results"></div>
+  </div>
+
+  <!-- ══ SAVED ══ -->
+  <div id="tab-saved" class="tab-panel">
+    <div class="saved-hdr">
+      <div>
+        <div class="saved-title">My Predictions</div>
+        <div class="saved-sub">Roland-Garros 2026 starts Sunday — save your bracket and check back as results come in.</div>
+      </div>
+      <button class="clear-btn" id="clear-btn" onclick="clearAll()" style="display:none">Clear all</button>
+    </div>
+    <div class="saved-empty" id="saved-empty">
+      <div style="font-size:44px;opacity:.2">🎾</div>
+      <p style="font-size:15px;font-weight:600;color:var(--text)">No predictions saved yet</p>
+      <p style="font-size:13px">Simulate a bracket, then hit <strong>💾 Save</strong> to store it here.</p>
+      <button class="cta-primary" style="margin-top:8px" onclick="switchTab('bracket')">Go to Bracket</button>
+    </div>
+    <div class="saved-grid" id="saved-grid"></div>
+  </div>
+
+  <!-- ══ MY PICKS ══ -->
+  <div id="tab-picks" class="tab-panel" style="flex-direction:column">
+    <div class="picks-hdr">
+      <div>
+        <div class="picks-title">My Picks</div>
+        <div class="picks-sub">Click a player to pick the winner. Picks save automatically and advance round by round.</div>
+      </div>
+      <div class="picks-hdr-btns">
+        <button class="picks-reset-btn" onclick="resetMyPicks()">Reset</button>
+        <button class="picks-share-btn" id="picks-share-btn" onclick="shareMyPicks()" disabled>Share My Bracket</button>
+      </div>
+    </div>
+    <div class="picks-rnav" id="picks-rnav"></div>
+    <div class="picks-prog-bar">
+      <div class="picks-prog-track"><div class="picks-prog-fill" id="picks-prog-fill" style="width:0%"></div></div>
+      <div class="picks-prog-label" id="picks-prog-label">0 / 64 picks</div>
+    </div>
+    <div class="picks-actions" id="picks-actions" style="display:none">
+      <button class="picks-auto-btn" onclick="autoPickFavourites()">⚡ Pick model favourites</button>
+      <span class="picks-auto-hint">Fills unpicked matches with the model's pick</span>
+    </div>
+    <div class="picks-sep"></div>
+    <div class="picks-area" id="picks-area">
+      <div class="picks-loading" id="picks-loading">
+        <div style="font-size:42px;opacity:.2">🎾</div>
+        <p style="font-size:14px;font-weight:600;color:var(--text)">Select the ATP or WTA tab above, then click here to start picking.</p>
+      </div>
+      <div id="picks-match-grid" style="display:none"></div>
+      <div class="picks-champ-reveal" id="picks-champ-reveal"></div>
+    </div>
+  </div>
+
+</div><!-- #content -->
+
+<!-- ── Toast ── -->
+<div id="toast"></div>
+
+<!-- ── Share modal ── -->
+<div id="share-overlay" onclick="if(event.target===this)closeShare()">
+  <div class="share-box">
+    <div class="share-hdr">
+      <span class="share-title">Share your bracket</span>
+      <button class="share-close" onclick="closeShare()">×</button>
+    </div>
+    <div class="share-preview">
+      <canvas id="share-canvas"></canvas>
+    </div>
+    <div class="share-quip" id="share-quip"></div>
+    <div class="share-actions">
+      <button class="share-dl-btn" onclick="downloadImage()">⬇ Download Image</button>
+      <button class="share-link-btn" id="share-link-btn" onclick="copyLink()">🔗 Copy Link</button>
+    </div>
+  </div>
+</div>
+
+<!-- ── Player overlay ── -->
+<div id="player-overlay">
+  <div class="po-header">
+    <span class="po-name" id="po-name"></span>
+    <button class="po-close" onclick="closeCard()">×</button>
+  </div>
+  <div class="po-body" id="po-body"></div>
+</div>
+
+<div id="player-tooltip">
+  <div class="tt-photo" id="tt-photo"></div>
+  <div class="tt-name" id="tt-name"></div>
+  <div class="tt-flag" id="tt-flag"></div>
+  <div class="tt-stats">
+    <div class="tt-stat"><span>🏆 Grand Slams</span><strong id="tt-slams"></strong></div>
+    <div class="tt-stat"><span>🎾 Career titles</span><strong id="tt-titles"></strong></div>
+    <div class="tt-stat"><span>🟤 Clay Elo</span><strong id="tt-clay-elo"></strong></div>
+    <div class="tt-stat"><span>📈 Recent win %</span><strong id="tt-winrate"></strong></div>
+  </div>
+</div>
+
+<footer>
+  <span>Clay-court Elo · Logistic Regression · Monte Carlo · 25 years of ATP/WTA data</span>
+  <span>Made by Maanit</span>
+</footer>
+
+<script>
+'use strict';
+
+// ── Bracket layout constants (must match --slot CSS var) ──────────────
+const SLOT=34, MATCH=68, LABEL=46, COL=176, GAP=20, CW=144, CH=120;
+const TOTAL_H=32*SLOT;
+function mTop(R,i){ return LABEL+i*MATCH*Math.pow(2,R)+SLOT*(Math.pow(2,R)-1); }
+function mCY(R,i){ return mTop(R,i)+SLOT; }
+function cX(R){ return R*(COL+GAP); }
+
+// ── State ─────────────────────────────────────────────────────────────
+let tour='atp';
+
+// ── Dark mode ─────────────────────────────────────────────────────────
+function toggleDark(){
+  const dark=document.documentElement.dataset.theme==='dark';
+  document.documentElement.dataset.theme=dark?'light':'dark';
+  document.getElementById('dark-toggle').textContent=dark?'🌙':'☀️';
+  localStorage.setItem('ds-theme',dark?'light':'dark');
+}
+(function(){
+  const saved=localStorage.getItem('ds-theme');
+  if(saved==='dark'){
+    document.documentElement.dataset.theme='dark';
+    document.getElementById('dark-toggle').textContent='☀️';
+  }
+})();
+
+// ── Tour ──────────────────────────────────────────────────────────────
+function setTour(t){
+  tour=t;
+  document.getElementById('btn-atp').classList.toggle('active',t==='atp');
+  document.getElementById('btn-wta').classList.toggle('active',t==='wta');
+  loadLanding(); loadPlayers(); loadNameMap(t);
+  if(document.querySelector('.tab-btn.active')?.dataset.tab==='picks') loadMyPicksDraw(t);
+}
+
+// ── Tabs ──────────────────────────────────────────────────────────────
+document.querySelectorAll('.tab-btn').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    switchTab(btn.dataset.tab);
+    if(btn.dataset.tab==='saved') renderSaved();
+    if(btn.dataset.tab==='picks') loadMyPicksDraw(tour);
+  });
+});
+function switchTab(id){
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.toggle('active',b.dataset.tab===id));
+  document.querySelectorAll('.tab-panel').forEach(p=>p.classList.toggle('active',p.id==='tab-'+id));
+}
+function handleSimulate(){
+  const cur=document.querySelector('.tab-btn.active')?.dataset.tab;
+  if(cur==='odds'){ runOdds(); return; }
+  switchTab('bracket'); runBracket();
+}
+
+// ── Busy / Error ──────────────────────────────────────────────────────
+function setBusy(on,msg='Simulating…'){
+  document.getElementById('sim-btn').disabled=on;
+  document.getElementById('spinner').classList.toggle('on',on);
+  document.getElementById('spin-msg').textContent=msg;
+  const e=document.getElementById('err-box'); e.classList.remove('on'); e.textContent='';
+}
+function showErr(msg){ const e=document.getElementById('err-box'); e.textContent='⚠ '+msg; e.classList.add('on'); }
+
+// ══════════════════════════════════════════════════════════════════════
+// HOME — auto-loading landing data
+// ══════════════════════════════════════════════════════════════════════
+async function loadLanding(){
+  // Reset to skeletons
+  document.getElementById('fav-top3').innerHTML='<div class="skeleton" style="height:130px;border-radius:12px"></div>'.repeat(3);
+  document.getElementById('fav-rest').innerHTML='<div class="fav-list-row"><div class="skeleton sk" style="grid-column:1/-1"></div></div>'.repeat(5);
+  document.getElementById('story-grid').innerHTML='<div class="skeleton" style="height:110px;border-radius:10px"></div>'.repeat(4);
+  try{
+    const r=await fetch(`/landing/${tour}`);
+    const d=await r.json();
+    if(d.error) throw new Error(d.error);
+    oddsCache[tour] = d.favourites;
+    renderFavs(d.favourites);
+    renderStories(d.storylines);
+  }catch(e){ showErr(e.message); }
+}
+
+function renderFavs(favs){
+  const medals=['🥇','🥈','🥉'], classes=['rank1','rank2','rank3'];
+  // Top 3 hero cards
+  document.getElementById('fav-top3').innerHTML=favs.slice(0,3).map((f,i)=>`
+    <div class="fav-big ${classes[i]}">
+      <div class="fav-big-medal">${medals[i]}</div>
+      <div class="fav-big-name">${f.player}</div>
+      <div class="fav-big-pct">${f.prob}%</div>
+      <div class="fav-big-sub">title probability</div>
+    </div>`).join('');
+
+  // Remaining list
+  const maxP=favs[0].prob;
+  document.getElementById('fav-rest').innerHTML=favs.slice(3).map((f,i)=>`
+    <div class="fav-list-row">
+      <div class="fav-num">${i+4}</div>
+      <div class="fav-lname">${f.player}</div>
+      <div class="fav-bar-track"><div class="fav-bar-fill" data-w="${(f.prob/maxP*100).toFixed(1)}"></div></div>
+      <div class="fav-lpct">${f.prob}%</div>
+    </div>`).join('');
+
+  requestAnimationFrame(()=>requestAnimationFrame(()=>{
+    document.querySelectorAll('.fav-bar-fill').forEach(el=>{ el.style.width=el.dataset.w+'%'; });
+  }));
+}
+
+function renderStories(stories){
+  document.getElementById('story-grid').innerHTML=stories.map(s=>`
+    <div class="story-card">
+      <div class="story-tag">${s.icon} ${s.tag}</div>
+      <div class="story-title">${s.title}</div>
+      <div class="story-body">${s.body}</div>
+    </div>`).join('');
+}
+
+// ══════════════════════════════════════════════════════════════════════
+// BRACKET
+// ══════════════════════════════════════════════════════════════════════
+let currentBracket = null;
+
+async function runBracket(){
+  setBusy(true,'Simulating tournament…');
+  document.getElementById('b-empty').style.display='none';
+  document.getElementById('bracket-wrap').style.display='none';
+  document.getElementById('champ-banner').classList.remove('on');
+  document.getElementById('upset-bar').classList.remove('on');
+  document.querySelectorAll('.r-col,#bchamp').forEach(el=>el.remove());
+  const saveBtn = document.getElementById('save-btn');
+  saveBtn.style.display='none'; saveBtn.classList.remove('saved'); saveBtn.textContent='💾 Save';
+  document.getElementById('share-btn').style.display='none';
+  try{
+    const r=await fetch(`/bracket/${tour}`);
+    const d=await r.json();
+    if(d.error) throw new Error(d.error);
+    currentBracket = d;
+    renderChampBanner(d);
+    if(d.upset) renderUpset(d.upset);
+    renderBracket(d);
+    saveBtn.style.display='';
+    document.getElementById('share-btn').style.display='';
+  }catch(e){
+    showErr(e.message);
+    document.getElementById('b-empty').style.display='';
+  }finally{ setBusy(false); }
+}
+
+function renderChampBanner(d){
+  document.getElementById('cb-name').textContent=d.champion;
+  const pe=document.getElementById('cb-path'); pe.innerHTML='';
+  d.champion_path.forEach((s,i)=>{
+    if(i>0){ const a=document.createElement('span'); a.className='cb-arrow'; a.textContent='›'; pe.appendChild(a); }
+    const rnd=document.createElement('span'); rnd.className='cb-step';
+    rnd.textContent=s.round.replace('Round of','R')+':';
+    const nm=document.createElement('span'); nm.className='cb-beat'; nm.textContent=' '+s.beat;
+    pe.appendChild(rnd); pe.appendChild(nm);
+  });
+  document.getElementById('champ-banner').classList.add('on');
+}
+
+function renderUpset(u){
+  document.getElementById('ub-text').innerHTML=
+    `<strong>${u.winner}</strong> (${u.winner_prob}%) beat <strong>${u.loser}</strong> (${u.loser_prob}%) — ${u.round}`;
+  document.getElementById('upset-bar').classList.add('on');
+}
+
+function renderBracket(data){
+  const wrap=document.getElementById('bracket-wrap');
+  const canvas=document.getElementById('bcanvas');
+  const rounds=data.rounds, nR=rounds.length;
+  const isDark=document.documentElement.dataset.theme==='dark';
+  const W=cX(nR)+CW+16, H=TOTAL_H+LABEL+16;
+
+  wrap.style.width=W+'px'; wrap.style.height=H+'px';
+  canvas.width=W; canvas.height=H;
+
+  const ctx=canvas.getContext('2d');
+  ctx.clearRect(0,0,W,H);
+  const lineColor=isDark?'rgba(255,255,255,.07)':'rgba(0,0,0,.1)';
+  const champLine=isDark?'rgba(212,168,67,.35)':'rgba(192,57,43,.3)';
+
+  rounds.forEach((_,R)=>{
+    if(R>=nR-1) return;
+    const nN=rounds[R+1].matches.length;
+    const x1=cX(R)+COL, mx=x1+GAP/2, x2=cX(R+1);
+    for(let i=0;i<nN;i++){
+      const cyA=mCY(R,2*i), cyB=mCY(R,2*i+1), midY=(cyA+cyB)/2;
+      ctx.strokeStyle=lineColor; ctx.lineWidth=1; ctx.lineCap='round';
+      [[x1,cyA,mx,cyA],[x1,cyB,mx,cyB],[mx,cyA,mx,cyB],[mx,midY,x2,midY]].forEach(([ax,ay,bx,by])=>{
+        ctx.beginPath(); ctx.moveTo(ax,ay); ctx.lineTo(bx,by); ctx.stroke();
+      });
+    }
+  });
+
+  // Dashed line to champion
+  const fCY=mCY(nR-1,0), ccY=LABEL+TOTAL_H/2;
+  ctx.strokeStyle=champLine; ctx.lineWidth=1.5; ctx.setLineDash([4,4]);
+  ctx.beginPath();
+  ctx.moveTo(cX(nR-1)+COL,fCY);
+  ctx.lineTo(cX(nR)+GAP/2,fCY);
+  ctx.lineTo(cX(nR)+GAP/2,ccY);
+  ctx.lineTo(cX(nR)+6,ccY);
+  ctx.stroke(); ctx.setLineDash([]);
+
+  // Round columns
+  rounds.forEach((round,R)=>{
+    const col=document.createElement('div');
+    col.className='r-col';
+    col.style.cssText=`left:${cX(R)}px;width:${COL}px;top:0;height:${H}px`;
+    col.innerHTML=`<div class="r-label"><span class="r-label-name">${round.name}</span><span class="r-label-line"></span></div>`;
+
+    round.matches.forEach((m,i)=>{
+      const card=document.createElement('div');
+      card.className='match-card';
+      card.style.cssText=`top:${mTop(R,i)}px;left:4px;width:${COL-8}px;height:${MATCH}px`;
+
+      ['a','b'].forEach((s,si)=>{
+        const isW=m.winner===m[s];
+        const row=document.createElement('div');
+        row.className='p-row '+(isW?'winner':'loser');
+        row.style.height=SLOT+'px';
+        const nm=document.createElement('span'); nm.className='p-name'; nm.textContent=m[s];
+        row.appendChild(nm);
+        const seed=getSeed(m[s]);
+        if(seed){ const sb=document.createElement('span'); sb.className='p-seed'; sb.textContent=seed; row.appendChild(sb); }
+        card.appendChild(row);
+        row.addEventListener('mouseenter', e=>showTooltip(e.currentTarget, m[s]));
+        row.addEventListener('mouseleave', hideTooltip);
+        if(si===0){ const div=document.createElement('div'); div.className='p-divider'; card.appendChild(div); }
+      });
+      card.addEventListener('click',()=>openCard(m.winner,tour));
+      col.appendChild(card);
+    });
+    wrap.appendChild(col);
+  });
+
+  // Champion card
+  const cTop=LABEL+TOTAL_H/2-CH/2;
+  const cc=document.createElement('div'); cc.id='bchamp';
+  cc.style.cssText=`left:${cX(nR)+6}px;top:${cTop}px;width:${CW-12}px;height:${CH}px`;
+  cc.innerHTML=`<div class="bc-photo" id="bc-photo">${initials(data.champion)}</div><span class="bc-trophy">🏆</span><span class="bc-label">Champion</span><span class="bc-name">${data.champion}</span>`;
+  wrap.appendChild(cc);
+
+  wrap.style.display='block';
+  rounds.forEach((_,R)=>{ const c=wrap.querySelectorAll('.r-col')[R]; setTimeout(()=>c&&c.classList.add('in'),R*90); });
+  setTimeout(()=>{ const c=document.getElementById('bchamp'); if(c) c.classList.add('in'); },nR*90+100);
+  // Load champion photo
+  getPhoto(data.champion).then(url=>{
+    const el=document.getElementById('bc-photo');
+    if(el&&url){ el.style.backgroundImage=`url(${url})`; el.textContent=''; }
+  });
+}
+
+// ══════════════════════════════════════════════════════════════════════
+// ODDS
+// ══════════════════════════════════════════════════════════════════════
+async function runOdds(){
+  setBusy(true,'Running 10,000 simulations…');
+  document.getElementById('odds-empty').style.display='none';
+  document.getElementById('odds-content').style.display='none';
+  try{
+    const r=await fetch(`/simulate/${tour}`);
+    const d=await r.json();
+    if(d.error) throw new Error(d.error);
+    renderOdds(d.results,d.tour);
+    document.getElementById('odds-content').style.display='block';
+  }catch(e){ showErr(e.message); document.getElementById('odds-empty').style.display=''; }
+  finally{ setBusy(false); }
+}
+
+function renderOdds(players,label){
+  document.getElementById('odds-title').textContent=label+' — Roland-Garros 2026';
+  const top=players.slice(0,3);
+  document.getElementById('podium').innerHTML=
+    [[top[1],'p2','🥈'],[top[0],'p1','🥇'],[top[2],'p3','🥉']].filter(x=>x[0]).map(([p,cls,m])=>`
+      <div class="pod ${cls}"><div class="pod-medal">${m}</div><div class="pod-name">${p.player}</div>
+      <div class="pod-pct">${p.prob}%</div><div class="pod-sub">title probability</div></div>`).join('');
+  const maxP=players[0].prob;
+  document.getElementById('bar-list').innerHTML=players.map(p=>`
+    <div class="bar-row">
+      <div class="bar-name">${p.player}</div>
+      <div class="bar-track"><div class="bar-fill" data-w="${(p.prob/maxP*100).toFixed(1)}"></div></div>
+      <div class="bar-pct">${p.prob}%</div>
+    </div>`).join('');
+  requestAnimationFrame(()=>requestAnimationFrame(()=>{
+    document.querySelectorAll('.bar-fill').forEach(el=>{ el.style.width=el.dataset.w+'%'; });
+  }));
+}
+
+// ══════════════════════════════════════════════════════════════════════
+// H2H
+// ══════════════════════════════════════════════════════════════════════
+let allPlayers = [];
+const selectedPlayer = { a: '', b: '' };
+
+async function loadPlayers(){
+  try{
+    const r = await fetch(`/players/${tour}`);
+    const d = await r.json();
+    allPlayers = d.players || [];
+    // Reset search fields when tour switches
+    clearSearch('a'); clearSearch('b');
+  }catch(e){}
+}
+
+function buildSearch(side){
+  const input = document.getElementById(`h2h-${side}`);
+  const drop  = document.getElementById(`drop-${side}`);
+  const clrBtn= document.getElementById(`clear-${side}`);
+  let focusIdx = -1;
+
+  function showDrop(items){
+    if(!items.length){ drop.classList.remove('open'); return; }
+    drop.innerHTML = items.map((p,i)=>{
+      const q   = input.value.trim();
+      const esc = q.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');
+      const hi  = p.replace(new RegExp(`(${esc})`,'gi'),'<mark>$1</mark>');
+      return `<div class="player-option" data-name="${p}" data-idx="${i}">${hi}</div>`;
+    }).join('');
+    drop.classList.add('open');
+    focusIdx = -1;
+
+    drop.querySelectorAll('.player-option').forEach(opt=>{
+      opt.addEventListener('mousedown', e=>{
+        e.preventDefault();
+        selectPlayer(side, opt.dataset.name);
+      });
+    });
+  }
+
+  function hideDrop(){ drop.classList.remove('open'); focusIdx=-1; }
+
+  input.addEventListener('input', ()=>{
+    const q = input.value.trim().toLowerCase();
+    selectedPlayer[side] = '';  // clear selection when typing
+    clrBtn.classList.toggle('show', input.value.length > 0);
+    if(!q){ hideDrop(); return; }
+    const matches = allPlayers.filter(p=>p.toLowerCase().includes(q)).slice(0,12);
+    showDrop(matches);
+  });
+
+  input.addEventListener('keydown', e=>{
+    const opts = drop.querySelectorAll('.player-option');
+    if(!drop.classList.contains('open')) return;
+    if(e.key==='ArrowDown'){
+      e.preventDefault();
+      focusIdx = Math.min(focusIdx+1, opts.length-1);
+      opts.forEach((o,i)=>o.classList.toggle('focused',i===focusIdx));
+      if(opts[focusIdx]) opts[focusIdx].scrollIntoView({block:'nearest'});
+    } else if(e.key==='ArrowUp'){
+      e.preventDefault();
+      focusIdx = Math.max(focusIdx-1, 0);
+      opts.forEach((o,i)=>o.classList.toggle('focused',i===focusIdx));
+    } else if(e.key==='Enter'){
+      e.preventDefault();
+      const focused = drop.querySelector('.player-option.focused') || drop.querySelector('.player-option');
+      if(focused) selectPlayer(side, focused.dataset.name);
+    } else if(e.key==='Escape'){
+      hideDrop();
+    }
+  });
+
+  input.addEventListener('blur', ()=>{ setTimeout(hideDrop, 150); });
+  input.addEventListener('focus', ()=>{
+    if(input.value.trim()) input.dispatchEvent(new Event('input'));
+  });
+}
+
+function selectPlayer(side, name){
+  selectedPlayer[side] = name;
+  document.getElementById(`h2h-${side}`).value = name;
+  document.getElementById(`clear-${side}`).classList.add('show');
+  document.getElementById(`drop-${side}`).classList.remove('open');
+}
+
+function clearSearch(side){
+  selectedPlayer[side] = '';
+  const inp = document.getElementById(`h2h-${side}`);
+  if(inp){ inp.value=''; }
+  const clr = document.getElementById(`clear-${side}`);
+  if(clr) clr.classList.remove('show');
+  const drp = document.getElementById(`drop-${side}`);
+  if(drp) drp.classList.remove('open');
+}
+
+async function runH2H(){
+  const a = selectedPlayer.a || document.getElementById('h2h-a').value.trim();
+  const b = selectedPlayer.b || document.getElementById('h2h-b').value.trim();
+  if(!a||!b){ showErr('Type and select two players'); return; }
+  if(a===b){ showErr('Select two different players'); return; }
+  document.getElementById('h2h-result').classList.remove('on');
+  document.getElementById('h2h-history').style.display='none';
+
+  try{
+    // Run model prediction and H2H history fetch in parallel
+    const [modelRes, histRes] = await Promise.all([
+      fetch(`/h2h?tour=${tour}&a=${encodeURIComponent(a)}&b=${encodeURIComponent(b)}`),
+      fetch(`/h2h-history?tour=${tour}&a=${encodeURIComponent(a)}&b=${encodeURIComponent(b)}`),
+    ]);
+    const d    = await modelRes.json();
+    const hist = await histRes.json();
+    if(d.error) throw new Error(d.error);
+
+    document.getElementById('h2h-pa-name').textContent=a;
+    document.getElementById('h2h-pa-pct').textContent=d.prob_A+'%';
+    document.getElementById('h2h-pb-name').textContent=b;
+    document.getElementById('h2h-pb-pct').textContent=d.prob_B+'%';
+    document.getElementById('h2h-pa').classList.toggle('fav',d.prob_A>=d.prob_B);
+    document.getElementById('h2h-pb').classList.toggle('fav',d.prob_B>d.prob_A);
+    setH2HPhoto('h2h-photo-a', a);
+    setH2HPhoto('h2h-photo-b', b);
+    requestAnimationFrame(()=>requestAnimationFrame(()=>{
+      document.getElementById('h2h-bar').style.width=d.prob_A+'%';
+    }));
+    document.getElementById('h2h-insight').textContent=d.insight;
+    document.getElementById('h2h-result').classList.add('on');
+
+    // Render H2H history
+    renderH2HHistory(hist, a, b);
+  }catch(e){ showErr(e.message); }
+}
+
+function renderH2HHistory(hist, a, b){
+  const box = document.getElementById('h2h-history');
+  if(!hist.found){
+    box.style.display='';
+    document.getElementById('h2h-badges').innerHTML='';
+    document.getElementById('h2h-matches').innerHTML=
+      `<div class="h2h-no-history">No previous meetings found in my database.</div>`;
+    return;
+  }
+
+  // Score badges — bold the leader
+  const makeScore = (p1w, p2w, p1, p2) => {
+    const p1Bold = p1w > p2w, p2Bold = p2w > p1w;
+    return `<span class="${p1Bold?'leader':''}">${p1w}</span> — <span class="${p2Bold?'leader':''}">${p2w}</span>`;
+  };
+
+  const totalO = hist.overall.p1 + hist.overall.p2;
+  const totalC = hist.clay.p1   + hist.clay.p2;
+
+  document.getElementById('h2h-badges').innerHTML=`
+    <div class="h2h-badge" style="flex-direction:column;gap:2px">
+      <div class="h2h-badge-label">Overall (${totalO} matches)</div>
+      <div class="h2h-score">${makeScore(hist.overall.p1, hist.overall.p2, a, b)}</div>
+      <div style="font-size:11px;color:var(--muted)">${a} — ${b}</div>
+    </div>
+    ${totalC > 0 ? `<div class="h2h-badge" style="flex-direction:column;gap:2px">
+      <div class="h2h-badge-label">Clay only (${totalC} matches)</div>
+      <div class="h2h-score">${makeScore(hist.clay.p1, hist.clay.p2, a, b)}</div>
+      <div style="font-size:11px;color:var(--muted)">${a} — ${b}</div>
+    </div>` : '<div class="h2h-badge"><span style="font-size:12px;color:var(--muted)">No clay meetings on record</span></div>'}`;
+
+  // Last matches
+  const surfClass = s => s==='Clay'?'surf-clay':s==='Hard'?'surf-hard':'surf-grass';
+  document.getElementById('h2h-matches').innerHTML=
+    hist.last.map(m=>`
+      <div class="h2h-match-row">
+        <span class="h2h-match-date">${m.date.slice(0,7)}</span>
+        <span class="h2h-match-winner">${m.winner} won<span style="color:var(--muted);font-weight:400"> — ${m.tournament}</span></span>
+        <span class="h2h-match-surface ${surfClass(m.surface)}">${m.surface}</span>
+      </div>`).join('');
+
+  box.style.display='';
+}
+
+// Stats cache for tooltip (clay Elo + win rate)
+const statsCache = {};
+
+async function fetchPlayerStats(name){
+  if(statsCache[name] !== undefined) return statsCache[name];
+  statsCache[name] = null;
+  try{
+    const r = await fetch(`/player-stats/${tour}/${encodeURIComponent(name)}`);
+    const d = await r.json();
+    statsCache[name] = d;
+    return d;
+  }catch(e){ return null; }
+}
+
+// ══════════════════════════════════════════════════════════════════════
+// COMPARE
+// ══════════════════════════════════════════════════════════════════════
+async function runCompare(){
+  setBusy(true,'Running two simulations…');
+  document.getElementById('compare-empty').style.display='none';
+  document.getElementById('compare-results').classList.remove('on');
+  try{
+    const r=await fetch(`/compare/${tour}`);
+    const d=await r.json();
+    if(d.error) throw new Error(d.error);
+    const box=document.getElementById('compare-results');
+    box.innerHTML=[d.sim1,d.sim2].map((s,i)=>`
+      <div class="sim-card">
+        <div class="sim-card-label">Simulation ${i+1}</div>
+        <div class="sim-champ"><span class="sim-trophy">🏆</span><span class="sim-name">${s.champion}</span></div>
+        <div class="sim-final">def. <strong>${s.finalist}</strong> in the Final</div>
+        <div class="sim-path">Path: ${s.path.map(p=>p.beat).join(' → ')}</div>
+        <div class="sim-section">Semi-Finals</div>
+        ${s.semis.map(m=>`<div class="sim-sf-row"><span class="sim-sf-w">${m.winner}</span><span class="sim-sf-l">def. ${m.loser}</span></div>`).join('')}
+        ${s.upset?`<div class="sim-upset"><div class="sim-upset-lbl">⚡ Biggest Upset</div>
+          <div class="sim-upset-txt">${s.upset.winner} (${s.upset.winner_prob}%) beat ${s.upset.loser} — ${s.upset.round}</div></div>`
+          :'<div style="font-size:12px;color:var(--muted);margin-top:12px">No major upsets in this simulation.</div>'}
+      </div>`).join('');
+    box.classList.add('on');
+  }catch(e){ showErr(e.message); document.getElementById('compare-empty').style.display='block'; }
+  finally{ setBusy(false); }
+}
+
+// ══════════════════════════════════════════════════════════════════════
+// PLAYER CARD
+// ══════════════════════════════════════════════════════════════════════
+async function openCard(name,t){
+  document.getElementById('po-name').textContent=name;
+  document.getElementById('po-body').innerHTML='<div style="color:var(--muted);font-size:13px;padding:12px 0">Loading…</div>';
+  document.getElementById('player-overlay').classList.add('open');
+  try{
+    const r=await fetch(`/player-stats/${t}/${encodeURIComponent(name)}`);
+    const d=await r.json();
+    const na='—';
+    document.getElementById('po-body').innerHTML=`
+      <div class="po-grid">
+        <div class="po-stat">
+          <div class="po-stat-label">${d.surface} Elo</div>
+          <div class="po-stat-val">${d.elo_surface!=null?d.elo_surface.toLocaleString():na}</div>
+          <div class="po-stat-sub">Surface-specific rating</div>
+        </div>
+        <div class="po-stat">
+          <div class="po-stat-label">Global Elo</div>
+          <div class="po-stat-val">${d.elo_global!=null?d.elo_global.toLocaleString():na}</div>
+          <div class="po-stat-sub">All-surface rating</div>
+        </div>
+      </div>
+      <div class="po-stat">
+        <div class="po-stat-label">Recent Win Rate</div>
+        <div class="po-stat-val">${d.win_rate!=null?d.win_rate+'%':na}</div>
+        <div class="po-stat-sub">${d.matches_played!=null?'Across last '+d.matches_played+' matches tracked':'No recent data available'}</div>
+      </div>
+      <div class="po-note">Clay Elo is built from 25 years of match results, weighted towards recent form on clay. Higher = stronger on this surface.</div>`;
+  }catch(e){
+    document.getElementById('po-body').innerHTML='<div style="color:var(--clay);font-size:13px">Failed to load stats.</div>';
+  }
+}
+
+function closeCard(){ document.getElementById('player-overlay').classList.remove('open'); }
+document.getElementById('content').addEventListener('click',e=>{
+  if(document.getElementById('player-overlay').classList.contains('open')&&
+     !document.getElementById('player-overlay').contains(e.target)) closeCard();
+});
+
+// ══════════════════════════════════════════════════════════════════════
+// PLAYER DATA, PHOTOS & TOOLTIPS
+// ══════════════════════════════════════════════════════════════════════
+let playerData = {};
+let seedsData  = {};
+let nameMap    = {};
+let oddsCache  = {};       // { atp: [{player, prob}, ...], wta: [...] }
+const photoCache = {};
+
+async function loadPlayerData(){
+  try{
+    const [pdRes, sdRes] = await Promise.all([
+      fetch('/static/player_data.json'),
+      fetch('/static/seeds.json'),
+    ]);
+    playerData = await pdRes.json();
+    seedsData  = await sdRes.json();
+  }catch(e){ console.warn('Could not load player data', e); }
+}
+
+function getSeed(name){
+  return (seedsData[tour?.toLowerCase()] || {})[name] || '';
+}
+
+async function loadNameMap(t){
+  try{
+    const r = await fetch(`/name-map/${t}`);
+    nameMap = await r.json();
+  }catch(e){}
+}
+
+function initials(name){
+  // "J. Sinner" → "JS"
+  return name.replace(/[^A-Z]/g,'').slice(0,2) || name.slice(0,2).toUpperCase();
+}
+
+async function fetchPhoto(wikiTitle){
+  if(!wikiTitle) return null;
+  const key = wikiTitle;
+  if(photoCache[key] !== undefined) return photoCache[key];
+  photoCache[key] = null;
+  try{
+    const r = await fetch(`https://en.wikipedia.org/api/rest_v1/page/summary/${wikiTitle}`);
+    if(!r.ok){ photoCache[key]=null; return null; }
+    const d = await r.json();
+    const url = d.thumbnail?.source || null;
+    photoCache[key] = url;
+    return url;
+  }catch(e){ return null; }
+}
+
+// Get photo for any player — uses curated wiki title if known,
+// otherwise falls back to their full draw name as the Wikipedia search term
+async function getPhoto(readableName){
+  const pd = playerData[readableName];
+  if(pd?.wiki) return fetchPhoto(pd.wiki);
+  // Fall back to full name from draw CSV (e.g. "Learner Tien")
+  const full = nameMap[readableName];
+  if(full) return fetchPhoto(full.replace(/ /g,'_'));
+  return null;
+}
+
+async function setH2HPhoto(elId, playerName){
+  const el = document.getElementById(elId);
+  if(!el) return;
+  el.textContent = initials(playerName);
+  el.style.backgroundImage = '';
+  const url = await getPhoto(playerName);
+  if(url){ el.style.backgroundImage=`url(${url})`; el.textContent=''; }
+}
+
+let _tooltipTimer = null;
+function showTooltip(el, name){
+  const tt = document.getElementById('player-tooltip');
+  const pd = playerData[name];
+
+  // Set text content immediately
+  document.getElementById('tt-name').textContent = pd ? pd.full_name : name;
+  document.getElementById('tt-flag').textContent = pd ? pd.flag+' '+pd.full_name.split(' ').pop() : '';
+  document.getElementById('tt-slams').textContent = pd ? pd.slams : '—';
+  document.getElementById('tt-titles').textContent = pd ? pd.titles : '—';
+
+  // Show initials in photo while loading
+  const photoEl = document.getElementById('tt-photo');
+  photoEl.textContent = initials(name);
+  photoEl.style.backgroundImage = '';
+
+  // Position tooltip
+  const rect = el.getBoundingClientRect();
+  const ttW = 200, margin = 10;
+  let left = rect.right + margin;
+  let top  = rect.top - 10;
+  if(left + ttW > window.innerWidth) left = rect.left - ttW - margin;
+  if(top + 180 > window.innerHeight) top = window.innerHeight - 190;
+  tt.style.left = left + 'px';
+  tt.style.top  = Math.max(8, top) + 'px';
+  tt.classList.add('show');
+
+  // Fetch photo and live stats lazily
+  const clayEloEl  = document.getElementById('tt-clay-elo');
+  const winRateEl  = document.getElementById('tt-winrate');
+  clayEloEl.textContent  = '…';
+  winRateEl.textContent  = '…';
+
+  getPhoto(name).then(url=>{
+    if(url && tt.classList.contains('show')){
+      photoEl.style.backgroundImage=`url(${url})`;
+      photoEl.textContent='';
+    }
+  });
+
+  fetchPlayerStats(name).then(s=>{
+    if(!s || !tt.classList.contains('show')) return;
+    clayEloEl.textContent  = s.elo_surface != null ? s.elo_surface.toLocaleString() : '—';
+    winRateEl.textContent  = s.win_rate    != null ? s.win_rate + '%'                : '—';
+  });
+}
+
+function hideTooltip(){
+  document.getElementById('player-tooltip').classList.remove('show');
+}
+
+// ══════════════════════════════════════════════════════════════════════
+// SHARE BRACKET
+// ══════════════════════════════════════════════════════════════════════
+
+function openShare(){
+  if(!currentBracket) return;
+  document.getElementById('share-overlay').classList.add('open');
+  document.getElementById('share-quip').innerHTML = buildShareQuip(currentBracket);
+  drawShareCard(document.getElementById('share-canvas'));
+}
+
+function buildShareQuip(d){
+  const champion = d.champion;
+  const tourOdds = oddsCache[tour.toLowerCase()] || [];
+  const entry = tourOdds.find(p => p.player === champion);
+
+  if(entry && entry.prob > 0){
+    const prob    = entry.prob;
+    const decimal = (100 / prob).toFixed(1);
+    const frac    = prob >= 50
+      ? `${(100 / prob - 1).toFixed(1)}/1 on`      // heavy favourite
+      : `${(100 / prob - 1).toFixed(1)}/1`;          // outsider
+
+    return `My model gave <strong>${champion}</strong> a <strong>${prob}%</strong> shot — ` +
+      `roughly <strong>${frac}</strong> in old money. ` +
+      `I'm not telling you to do anything with that. ` +
+      `I am telling you to send this to your group chat and let the record show you called it.`;
+  }
+
+  // Fallback if not in top odds (dark horse champion — even better)
+  return `<strong>${champion}</strong> wasn't even in my top picks. ` +
+    `Which makes this screenshot worth significantly more. ` +
+    `Send it to everyone you know. Let the record show you saw it coming.`;
+}
+function closeShare(){ document.getElementById('share-overlay').classList.remove('open'); }
+
+// ── Canvas card drawing ───────────────────────────────────────────────
+async function drawShareCard(canvas){
+  const W=900, H=480;
+  canvas.width=W; canvas.height=H;
+  const ctx=canvas.getContext('2d');
+  const d=currentBracket;
+
+  // Background
+  ctx.fillStyle='#0f0d0b'; ctx.fillRect(0,0,W,H);
+
+  // Header bar
+  ctx.fillStyle='#C0392B'; ctx.fillRect(0,0,W,58);
+  ctx.fillStyle='#fff';
+  ctx.font="700 18px 'Playfair Display',Georgia,serif";
+  ctx.fillText('Drop Shot',26,38);
+  ctx.fillStyle='rgba(255,255,255,0.6)';
+  ctx.font="500 12px 'Inter',system-ui,sans-serif";
+  ctx.fillText('Roland-Garros 2026',148,38);
+  // Tour pill
+  ctx.fillStyle='rgba(255,255,255,0.18)';
+  rrect(ctx,W-74,15,60,28,5); ctx.fill();
+  ctx.fillStyle='#fff'; ctx.font="700 11px 'Inter',system-ui,sans-serif";
+  ctx.textAlign='center'; ctx.fillText(d.tour,W-44,33); ctx.textAlign='left';
+
+  // ── Left column ──
+  const lx=44;
+
+  // Champion label
+  ctx.fillStyle='#C0392B'; ctx.font="700 9px 'Inter',system-ui,sans-serif";
+  ctx.fillText('🏆  CHAMPION',lx,96);
+
+  // Champion name
+  const nameSize = d.champion.length>14?'700 30px':'700 38px';
+  ctx.fillStyle='#F0E8DC';
+  ctx.font=`${nameSize} 'Playfair Display',Georgia,serif`;
+  ctx.fillText(d.champion,lx,140);
+
+  // Path label + text
+  ctx.fillStyle='#7A7068'; ctx.font="700 9px 'Inter',system-ui,sans-serif";
+  ctx.fillText('PATH TO THE TITLE',lx,174);
+  ctx.fillStyle='#9A8F84'; ctx.font="400 12px 'Inter',system-ui,sans-serif";
+  const pathStr = d.champion_path.map(p=>p.beat).join(' → ');
+  wrapText(ctx,pathStr,lx,194,490,17);
+
+  // Semi-finals
+  const sfMatches = d.rounds?.slice(-2)[0]?.matches||[];
+  if(sfMatches.length){
+    ctx.fillStyle='#7A7068'; ctx.font="700 9px 'Inter',system-ui,sans-serif";
+    ctx.fillText('SEMI-FINALS',lx,248);
+    ctx.fillStyle='#9A8F84'; ctx.font="400 12px 'Inter',system-ui,sans-serif";
+    sfMatches.forEach((m,i)=>{
+      const loser=m.a===m.winner?m.b:m.a;
+      ctx.fillText(`${m.winner}  def.  ${loser}`,lx,268+i*20);
+    });
+  }
+
+  // Upset
+  if(d.upset){
+    const uy=316;
+    ctx.fillStyle='rgba(192,57,43,0.14)';
+    rrect(ctx,lx-8,uy-14,490,32,5); ctx.fill();
+    ctx.fillStyle='#E74C3C'; ctx.font="600 11px 'Inter',system-ui,sans-serif";
+    ctx.fillText(`⚡ ${d.upset.winner} (${d.upset.winner_prob}%) beat ${d.upset.loser} · ${d.upset.round}`,lx,uy+5);
+  }
+
+  // ── Right column: player photo ──
+  const px=W-126, py=260, pr=76;
+  ctx.fillStyle='#1e1b18';
+  ctx.beginPath(); ctx.arc(px,py,pr,0,Math.PI*2); ctx.fill();
+
+  const photoURL = await getPhoto(d.champion).catch(()=>null);
+  if(photoURL){
+    try{
+      const img=new Image(); img.crossOrigin='anonymous';
+      await new Promise((res,rej)=>{img.onload=res;img.onerror=rej;img.src=photoURL;});
+      ctx.save();
+      ctx.beginPath(); ctx.arc(px,py,pr,0,Math.PI*2); ctx.clip();
+      ctx.drawImage(img,px-pr,py-pr,pr*2,pr*2);
+      ctx.restore();
+    }catch(e){
+      drawInitials(ctx,d.champion,px,py);
+    }
+  } else { drawInitials(ctx,d.champion,px,py); }
+
+  ctx.strokeStyle='rgba(192,57,43,0.45)'; ctx.lineWidth=2;
+  ctx.beginPath(); ctx.arc(px,py,pr+2,0,Math.PI*2); ctx.stroke();
+
+  // ── Footer ──
+  ctx.fillStyle='rgba(255,255,255,0.04)'; ctx.fillRect(0,H-38,W,38);
+  ctx.fillStyle='rgba(255,255,255,0.3)'; ctx.font="400 11px 'Inter',system-ui,sans-serif";
+  ctx.textAlign='center';
+  ctx.fillText('web-production-b3f9e.up.railway.app  ·  Simulate your own bracket',W/2,H-13);
+  ctx.textAlign='left';
+}
+
+function drawInitials(ctx,name,cx,cy){
+  ctx.fillStyle='#7A7068';
+  ctx.font="700 26px 'Inter',system-ui,sans-serif";
+  ctx.textAlign='center'; ctx.fillText(initials(name),cx,cy+9); ctx.textAlign='left';
+}
+
+function rrect(ctx,x,y,w,h,r){
+  ctx.beginPath();
+  ctx.moveTo(x+r,y); ctx.lineTo(x+w-r,y); ctx.arcTo(x+w,y,x+w,y+r,r);
+  ctx.lineTo(x+w,y+h-r); ctx.arcTo(x+w,y+h,x+w-r,y+h,r);
+  ctx.lineTo(x+r,y+h); ctx.arcTo(x,y+h,x,y+h-r,r);
+  ctx.lineTo(x,y+r); ctx.arcTo(x,y,x+r,y,r); ctx.closePath();
+}
+
+function wrapText(ctx,text,x,y,maxW,lh){
+  const words=text.split(' '); let line='', cy=y;
+  for(const w of words){
+    const test=line+w+' ';
+    if(ctx.measureText(test).width>maxW&&line){
+      ctx.fillText(line.trim(),x,cy); line=w+' '; cy+=lh;
+    } else { line=test; }
+  }
+  ctx.fillText(line.trim(),x,cy);
+}
+
+// ── Download ─────────────────────────────────────────────────────────
+function downloadImage(){
+  const canvas=document.getElementById('share-canvas');
+  const a=document.createElement('a');
+  a.download=`dropshot-${currentBracket?.tour||'bracket'}-rg2026.png`;
+  a.href=canvas.toDataURL('image/png');
+  a.click();
+  showToast('Image downloaded!');
+}
+
+// ── URL encoding / decoding ───────────────────────────────────────────
+function encodeBracket(d){
+  const compact={
+    v:1, t:d.tour, c:d.champion, p:d.champion_path,
+    r:d.rounds?.map(rnd=>({n:rnd.name, m:rnd.matches.map(m=>[m.a,m.b,m.winner,m.winner_prob])})),
+    u:d.upset||null,
+  };
+  return btoa(unescape(encodeURIComponent(JSON.stringify(compact))));
+}
+
+function copyLink(){
+  if(!currentBracket) return;
+  const url=window.location.origin+window.location.pathname+'#s='+encodeBracket(currentBracket);
+  navigator.clipboard.writeText(url).then(()=>{
+    const btn=document.getElementById('share-link-btn');
+    btn.textContent='✓ Copied!';
+    setTimeout(()=>{ btn.textContent='🔗 Copy Link'; },2000);
+  }).catch(()=>{ showToast('Copy failed — try manually'); });
+}
+
+function loadFromShareURL(){
+  const hash=window.location.hash;
+  if(!hash.startsWith('#s=')) return;
+  try{
+    const raw=decodeURIComponent(escape(atob(hash.slice(3))));
+    const data=JSON.parse(raw);
+    if(data.v!==1) return;
+
+    const rounds=(data.r||[]).map(rnd=>({
+      name:rnd.n,
+      matches:rnd.m.map(m=>({a:m[0],b:m[1],winner:m[2],winner_prob:m[3]}))
+    }));
+
+    currentBracket={
+      tour:data.t, champion:data.c, champion_path:data.p,
+      rounds, upset:data.u||null,
+    };
+
+    switchTab('bracket');
+    renderChampBanner(currentBracket);
+    if(currentBracket.upset) renderUpset(currentBracket.upset);
+    renderBracket(currentBracket);
+    document.getElementById('save-btn').style.display='';
+    document.getElementById('share-btn').style.display='';
+    showToast('Shared bracket loaded!');
+    history.replaceState(null,'',window.location.pathname);
+  }catch(e){ console.warn('Invalid share URL'); }
+}
+
+// ══════════════════════════════════════════════════════════════════════
+// SAVED PREDICTIONS
+// ══════════════════════════════════════════════════════════════════════
+const STORAGE_KEY = 'dropshot_predictions_v1';
+
+// Actual results — filled in once the tournament concludes (7 June 2026)
+const ACTUAL = {
+  ATP: null, // { champion, finalist, semis:[{winner,loser},{winner,loser}] }
+  WTA: null,
+};
+
+function getSaved(){ try{ return JSON.parse(localStorage.getItem(STORAGE_KEY))||[]; }catch{ return []; } }
+function setSaved(arr){ localStorage.setItem(STORAGE_KEY, JSON.stringify(arr)); }
+
+function savePrediction(){
+  if(!currentBracket) return;
+  const d = currentBracket;
+  const final = d.rounds.slice(-1)[0].matches[0];
+  const finalist = final.a === d.champion ? final.b : final.a;
+  const sfMatches = d.rounds.slice(-2)[0]?.matches || [];
+
+  const pred = {
+    id:       'p_' + Date.now(),
+    savedAt:  Date.now(),
+    tour:     d.tour,
+    champion: d.champion,
+    finalist,
+    semis:    sfMatches.map(m=>({ winner:m.winner, loser: m.a===m.winner?m.b:m.a })),
+    upset:    d.upset || null,
+    champion_path: d.champion_path,
+    rounds:   d.rounds,
+  };
+
+  const saved = getSaved();
+  saved.unshift(pred);
+  if(saved.length > 30) saved.splice(30);
+  setSaved(saved);
+
+  // Update button state
+  const btn = document.getElementById('save-btn');
+  btn.textContent = '✓ Saved';
+  btn.classList.add('saved');
+
+  updateSavedBadge();
+  showToast('Prediction saved!');
+}
+
+function deletePrediction(id){
+  setSaved(getSaved().filter(p=>p.id!==id));
+  renderSaved();
+  updateSavedBadge();
+  showToast('Prediction deleted');
+}
+
+function clearAll(){
+  if(!confirm('Delete all saved predictions?')) return;
+  localStorage.removeItem(STORAGE_KEY);
+  renderSaved();
+  updateSavedBadge();
+}
+
+function loadPrediction(id){
+  const pred = getSaved().find(p=>p.id===id);
+  if(!pred) return;
+  currentBracket = pred;
+  switchTab('bracket');
+  document.getElementById('b-empty').style.display='none';
+  document.getElementById('bracket-wrap').style.display='none';
+  document.getElementById('champ-banner').classList.remove('on');
+  document.getElementById('upset-bar').classList.remove('on');
+  document.querySelectorAll('.r-col,#bchamp').forEach(el=>el.remove());
+  renderChampBanner(pred);
+  if(pred.upset) renderUpset(pred.upset);
+  renderBracket(pred);
+  // Show save button in "already saved" state
+  const btn = document.getElementById('save-btn');
+  btn.style.display='';
+  btn.textContent='✓ Saved';
+  btn.classList.add('saved');
+}
+
+function updateSavedBadge(){
+  const n = getSaved().length;
+  const btn = document.getElementById('saved-tab-btn');
+  if(btn) btn.textContent = n > 0 ? `Saved (${n})` : 'Saved';
+  document.getElementById('clear-btn').style.display = n > 0 ? '' : 'none';
+}
+
+function scoreIcon(predicted, actual){
+  if(!actual) return '';
+  return predicted === actual ? '✅' : '❌';
+}
+
+function renderSaved(){
+  const saved = getSaved();
+  const empty = document.getElementById('saved-empty');
+  const grid  = document.getElementById('saved-grid');
+
+  if(saved.length === 0){
+    empty.style.display='';
+    grid.innerHTML='';
+    return;
+  }
+  empty.style.display='none';
+
+  grid.innerHTML = saved.map(pred=>{
+    const tourLower = pred.tour.toLowerCase();
+    const actual = ACTUAL[pred.tour];
+    const d = new Date(pred.savedAt);
+    const dateStr = d.toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'})
+      + ' · ' + d.toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'});
+
+    const champScore = actual ? scoreIcon(pred.champion, actual.champion) : '';
+    const finScore   = actual ? scoreIcon(pred.finalist, actual.finalist) : '';
+    const sfScores   = actual && actual.semis.length
+      ? pred.semis.map((sf,i) => scoreIcon(sf.winner, actual.semis[i]?.winner))
+      : [];
+
+    const resultsHtml = actual ? `
+      <div class="sv-result">
+        <div class="sv-result-row"><span class="sv-tick">${champScore}</span><span>Champion: <strong>${pred.champion}</strong></span></div>
+        <div class="sv-result-row"><span class="sv-tick">${finScore}</span><span>Finalist: <strong>${pred.finalist}</strong></span></div>
+        ${pred.semis.map((sf,i)=>`<div class="sv-result-row"><span class="sv-tick">${sfScores[i]||''}</span><span>SF: <strong>${sf.winner}</strong></span></div>`).join('')}
+      </div>` : '';
+
+    const upsetHtml = pred.upset
+      ? `<div class="sv-upset">⚡ ${pred.upset.winner} (${pred.upset.winner_prob}%) beat ${pred.upset.loser}</div>`
+      : '';
+
+    return `<div class="sv-card">
+      <div class="sv-card-top ${tourLower}"></div>
+      <div class="sv-card-body">
+        <div class="sv-meta">
+          <span class="sv-tour ${tourLower}">${pred.tour} · Roland-Garros 2026</span>
+          <span class="sv-date">${dateStr}</span>
+        </div>
+        <div class="sv-champion">
+          <div class="sv-champ-photo" id="svp-${pred.id}">${initials(pred.champion)}</div>
+          <div class="sv-champ-name">${pred.champion}</div>
+        </div>
+        <div class="sv-finalist">def. <strong>${pred.finalist}</strong> in the Final</div>
+        ${upsetHtml}
+        ${resultsHtml}
+      </div>
+      <div class="sv-actions">
+        <button class="sv-load" onclick="loadPrediction('${pred.id}')">Load Bracket</button>
+        <button class="sv-del"  onclick="deletePrediction('${pred.id}')">Delete</button>
+      </div>
+    </div>`;
+  }).join('');
+
+  // Load champion photos async
+  saved.forEach(pred=>{
+    getPhoto(pred.champion).then(url=>{
+      const el = document.getElementById('svp-'+pred.id);
+      if(el && url){ el.style.backgroundImage=`url(${url})`; el.textContent=''; }
+    });
+  });
+}
+
+function showToast(msg){
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'), 2200);
+}
+
+// ══════════════════════════════════════════════════════════════════════
+// MY PICKS
+// ══════════════════════════════════════════════════════════════════════
+const PICKS_KEY   = 'dropshot_picks_v1';
+const PICK_ABBR   = ['R128','R64','R32','R16','QF','SF','Final'];
+const PICK_SIZES  = [64,32,16,8,4,2,1];
+
+const myPicksState = { atp:null, wta:null };  // null = not yet loaded
+const myPicksCurR  = { atp:0, wta:0 };
+const picksReady   = { atp:false, wta:false };
+let   _pendingPicksURL = null;
+
+// Probability state — R128 batch + per-matchup cache for R64+
+const pickProbs      = { atp:null, wta:null };  // indexed array from /draw-probs
+const matchProbCache = {};                       // key: `${tour}|${a}|||${b}`
+
+function getMatchProb(curR, mi, a, b){
+  if(curR===0 && pickProbs[tour]) return pickProbs[tour][mi]||null;
+  if(a && b) return matchProbCache[`${tour}|${a}|||${b}`]||null;
+  return null;
+}
+
+async function fetchRoundProbs(rounds, curR){
+  if(curR===0){
+    if(pickProbs[tour]) return;
+    try{
+      const r=await fetch(`/draw-probs/${tour}`);
+      const d=await r.json();
+      if(d.probs){ pickProbs[tour]=d.probs; renderPicksTab(); }
+    }catch(e){}
+    return;
+  }
+  const toFetch=rounds[curR].filter(m=>m.a&&m.b&&!matchProbCache[`${tour}|${m.a}|||${m.b}`]);
+  if(!toFetch.length) return;
+  await Promise.all(toFetch.map(async m=>{
+    try{
+      const r=await fetch(`/h2h?tour=${tour}&a=${encodeURIComponent(m.a)}&b=${encodeURIComponent(m.b)}`);
+      const d=await r.json();
+      if(!d.error){
+        matchProbCache[`${tour}|${m.a}|||${m.b}`]={prob_a:d.prob_A, prob_b:d.prob_B};
+        matchProbCache[`${tour}|${m.b}|||${m.a}`]={prob_a:d.prob_B, prob_b:d.prob_A};
+      }
+    }catch(e){}
+  }));
+  renderPicksTab();
+}
+
+function autoPickFavourites(){
+  const rounds=myPicksState[tour];
+  if(!rounds) return;
+  const curR=myPicksCurR[tour];
+  let changed=false;
+  rounds[curR].forEach((m,mi)=>{
+    if(m.winner||!m.a||!m.b) return;
+    const probs=getMatchProb(curR,mi,m.a,m.b);
+    if(!probs) return;
+    m.winner=probs.prob_a>=probs.prob_b?m.a:m.b;
+    propagateMyPick(rounds,curR,mi);
+    changed=true;
+  });
+  if(!changed){ showToast('No picks to fill in!'); return; }
+  savePicksStored();
+  renderPicksTab();
+  showToast('Model favourites picked!');
+  const done=rounds[curR].filter(x=>x.winner).length;
+  if(done===PICK_SIZES[curR]&&curR<6){
+    setTimeout(()=>{ myPicksCurR[tour]=curR+1; renderPicksTab(); showToast(`${PICK_ABBR[curR]} done → ${PICK_ABBR[curR+1]}`); },380);
+  }
+}
+
+// ── Init rounds ───────────────────────────────────────────────────────
+function initPickRounds(r128){
+  const rounds = [ r128.map(m=>({a:m.a, b:m.b, winner:null})) ];
+  for(let r=1;r<7;r++)
+    rounds.push(Array.from({length:PICK_SIZES[r]},()=>({a:null,b:null,winner:null})));
+  return rounds;
+}
+
+// ── Fetch draw & bootstrap ────────────────────────────────────────────
+async function loadMyPicksDraw(t){
+  if(picksReady[t]){ if(tour===t) renderPicksTab(); return; }
+
+  document.getElementById('picks-loading').style.display='';
+  document.getElementById('picks-loading').innerHTML=
+    '<div style="font-size:42px;opacity:.2">🎾</div>' +
+    '<p style="font-size:14px;font-weight:600;color:var(--text)">Loading draw…</p>';
+  document.getElementById('picks-match-grid').style.display='none';
+  document.getElementById('picks-champ-reveal').className='picks-champ-reveal';
+
+  try{
+    const r = await fetch(`/draw/${t}`);
+    const d = await r.json();
+    if(d.error) throw new Error(d.error);
+
+    const stored = getPicksStored();
+    myPicksState[t] = stored[t] ? stored[t] : initPickRounds(d.matches);
+    picksReady[t] = true;
+
+    if(_pendingPicksURL && _pendingPicksURL.t===t){
+      applyPicksFromURL(_pendingPicksURL, t);
+      _pendingPicksURL = null;
+    }
+
+    if(tour===t){
+      document.getElementById('picks-loading').style.display='none';
+      document.getElementById('picks-match-grid').style.display='';
+      renderPicksTab();
+    }
+  }catch(e){
+    document.getElementById('picks-loading').innerHTML=
+      `<p style="color:var(--clay);font-size:13px">Failed to load draw: ${e.message}</p>`;
+  }
+}
+
+// ── Storage ───────────────────────────────────────────────────────────
+function getPicksStored(){
+  try{ return JSON.parse(localStorage.getItem(PICKS_KEY)||'{}'); }catch{ return {}; }
+}
+function savePicksStored(){
+  try{
+    const s=getPicksStored();
+    if(myPicksState[tour]) s[tour]=myPicksState[tour];
+    localStorage.setItem(PICKS_KEY, JSON.stringify(s));
+  }catch(e){}
+}
+
+// ── Pick logic ────────────────────────────────────────────────────────
+function makePick(roundIdx, matchIdx, player){
+  const rounds = myPicksState[tour];
+  if(!rounds) return;
+  const m = rounds[roundIdx][matchIdx];
+  m.winner = (m.winner===player) ? null : player;   // toggle
+  propagateMyPick(rounds, roundIdx, matchIdx);
+  savePicksStored();
+  renderPicksTab();
+
+  // Auto-advance when round fully picked
+  const done = rounds[roundIdx].filter(x=>x.winner).length;
+  if(done===PICK_SIZES[roundIdx] && roundIdx<6){
+    setTimeout(()=>{
+      myPicksCurR[tour] = roundIdx+1;
+      renderPicksTab();
+      showToast(`${PICK_ABBR[roundIdx]} done → ${PICK_ABBR[roundIdx+1]}`);
+    }, 380);
+  }
+}
+
+function propagateMyPick(rounds, rIdx, mIdx){
+  if(rIdx>=6) return;
+  const winner = rounds[rIdx][mIdx].winner;
+  const pIdx   = Math.floor(mIdx/2);
+  const isLeft = mIdx%2===0;
+  const parent = rounds[rIdx+1][pIdx];
+  if(isLeft) parent.a=winner; else parent.b=winner;
+  // Reset parent winner if it no longer matches either child slot
+  if(parent.winner!==null && parent.winner!==parent.a && parent.winner!==parent.b){
+    parent.winner=null;
+    propagateMyPick(rounds, rIdx+1, pIdx);
+  }
+}
+
+function resetMyPicks(){
+  if(!confirm(`Reset all ${tour.toUpperCase()} picks?`)) return;
+  myPicksState[tour]=null;
+  picksReady[tour]=false;
+  myPicksCurR[tour]=0;
+  try{ const s=getPicksStored(); delete s[tour]; localStorage.setItem(PICKS_KEY,JSON.stringify(s)); }catch(e){}
+  loadMyPicksDraw(tour);
+}
+
+// ── Render ────────────────────────────────────────────────────────────
+function renderPicksTab(){
+  const rounds = myPicksState[tour];
+  if(!rounds) return;
+  const curR = myPicksCurR[tour];
+  renderPicksRoundNav(rounds, curR);
+  renderPicksProgress(rounds, curR);
+  renderPicksGrid(rounds, curR);
+  const hasChamp = !!rounds[6][0].winner;
+  document.getElementById('picks-share-btn').disabled = !hasChamp;
+  // Show auto-pick button only once probabilities for the current round are available
+  const probsReady = curR===0
+    ? !!pickProbs[tour]
+    : rounds[curR].some(m=>m.a&&m.b&&matchProbCache[`${tour}|${m.a}|||${m.b}`]);
+  const autoEl = document.getElementById('picks-actions');
+  if(autoEl) autoEl.style.display = probsReady ? '' : 'none';
+}
+
+function renderPicksRoundNav(rounds, curR){
+  document.getElementById('picks-rnav').innerHTML = PICK_ABBR.map((abbr,i)=>{
+    const done     = rounds[i].filter(m=>m.winner).length;
+    const complete = done===PICK_SIZES[i];
+    const cls = ['picks-rtab', i===curR?'active':'', complete?'complete':''].filter(Boolean).join(' ');
+    return `<button class="${cls}" onclick="setPicksRound(${i})">${abbr}${complete?' ✓':''}</button>`;
+  }).join('');
+}
+
+function renderPicksProgress(rounds, curR){
+  const total = PICK_SIZES[curR];
+  const done  = rounds[curR].filter(m=>m.winner).length;
+  const pct   = total>0 ? (done/total*100) : 0;
+  document.getElementById('picks-prog-fill').style.width = pct+'%';
+  document.getElementById('picks-prog-label').textContent = `${done} / ${total} picks`;
+}
+
+function renderPicksGrid(rounds, curR){
+  const grid   = document.getElementById('picks-match-grid');
+  const reveal = document.getElementById('picks-champ-reveal');
+  const matches = rounds[curR];
+  const oneCol  = matches.length<=4;
+  grid.className = 'picks-match-grid'+(oneCol?' one-col':'');
+
+  const rowHTML = (m, mi, player, probPct)=>{
+    if(!player) return `<div class="pick-row is-tbd"><span class="pick-row-name">TBD</span></div>`;
+    const isW     = m.winner===player;
+    const isL     = m.winner && !isW;
+    const hasBoth = m.a && m.b;
+    const cls     = 'pick-row'+(isW?' is-winner':'')+(isL?' is-loser':'')+((!hasBoth)?' is-tbd':'');
+    const seed    = getSeed(player);
+    const pd      = playerData[player];
+    const flagHTML = pd?.flag ? `<span class="pick-row-flag">${pd.flag}</span>` : '';
+    const seedHTML = seed     ? `<span class="pick-row-seed">${seed}</span>`    : '';
+    const probHTML = (probPct!=null) ? `<span class="pick-row-prob">${probPct}%</span>` : '';
+    return `<div class="${cls}" data-round="${curR}" data-match="${mi}" data-player="${player.replace(/"/g,'&quot;')}">
+      ${flagHTML}<span class="pick-row-name">${player}</span>${seedHTML}${probHTML}
+    </div>`;
+  };
+
+  grid.innerHTML = matches.map((m,mi)=>{
+    const hasBoth = m.a && m.b;
+    const cardCls = 'pick-card'+(m.winner?' complete':'')+((!hasBoth && curR>0)?' tbd':'');
+    const probs   = getMatchProb(curR, mi, m.a, m.b);
+    const divider = probs
+      ? `<div class="pick-prob-wrap"><div class="pick-prob-fill" style="width:${probs.prob_a}%"></div></div>`
+      : `<div class="pick-divider"></div>`;
+    return `<div class="${cardCls}">
+      ${rowHTML(m,mi,m.a, probs?.prob_a)}
+      ${divider}
+      ${rowHTML(m,mi,m.b, probs?.prob_b)}
+    </div>`;
+  }).join('');
+
+  // Kick off lazy probability fetch (no-op if already cached)
+  fetchRoundProbs(rounds, curR);
+
+  // Champion reveal
+  const champ = rounds[6][0].winner;
+  if(curR===6 && champ){
+    reveal.className='picks-champ-reveal show';
+    const champFlag = playerData[champ]?.flag || '';
+    reveal.innerHTML=`
+      <div class="picks-champ-photo" id="picks-champ-photo">${initials(champ)}</div>
+      <div class="picks-champ-trophy">🏆</div>
+      <div class="picks-champ-lbl">My Champion · Roland-Garros 2026</div>
+      <div class="picks-champ-name">${champFlag ? champFlag+' ' : ''}${champ}</div>
+      <div class="picks-champ-actions">
+        <button class="picks-champ-btn primary"   onclick="shareMyPicks()">📤 Share</button>
+        <button class="picks-champ-btn secondary" onclick="saveMyPicks()">💾 Save</button>
+      </div>`;
+    getPhoto(champ).then(url=>{
+      const el=document.getElementById('picks-champ-photo');
+      if(el&&url){ el.style.backgroundImage=`url(${url})`; el.textContent=''; }
+    });
+  } else {
+    reveal.className='picks-champ-reveal';
+    reveal.innerHTML='';
+  }
+}
+
+function setPicksRound(r){
+  myPicksCurR[tour]=r;
+  renderPicksTab();
+  document.getElementById('picks-area').scrollTop=0;
+}
+
+// Click delegation — avoids embedding player names in onclick strings
+document.getElementById('picks-match-grid').addEventListener('click',e=>{
+  const row = e.target.closest('.pick-row');
+  if(!row || row.classList.contains('is-tbd')) return;
+  const rIdx   = +row.dataset.round;
+  const mIdx   = +row.dataset.match;
+  const player = row.dataset.player;
+  if(!isNaN(rIdx) && !isNaN(mIdx) && player) makePick(rIdx, mIdx, player);
+});
+
+// ── Share & Save ──────────────────────────────────────────────────────
+function shareMyPicks(){
+  const rounds = myPicksState[tour];
+  if(!rounds || !rounds[6][0].winner){ showToast('Pick a champion first!'); return; }
+  const winners = rounds.flatMap(rnd=>rnd.map(m=>m.winner||''));
+  const encoded = btoa(unescape(encodeURIComponent(JSON.stringify({v:1,t:tour,w:winners}))));
+  const url = window.location.origin+window.location.pathname+'#p='+encoded;
+  navigator.clipboard.writeText(url)
+    .then(()=>showToast('Picks link copied!'))
+    .catch(()=>showToast('Copy failed — try manually'));
+}
+
+function saveMyPicks(){
+  const rounds = myPicksState[tour];
+  const champ  = rounds?.[6]?.[0]?.winner;
+  if(!champ){ showToast('Pick a champion to save!'); return; }
+
+  const fMatch   = rounds[6][0];
+  const finalist = (fMatch.a===champ ? fMatch.b : fMatch.a) || 'TBD';
+  const pred = {
+    id:      'mp_'+Date.now(),
+    savedAt: Date.now(),
+    tour:    tour.toUpperCase(),
+    champion: champ,
+    finalist,
+    semis: rounds[5].map(m=>({winner:m.winner||'TBD', loser:m.a===m.winner?m.b:m.a||'TBD'})),
+    upset: null,
+    champion_path: [],
+    rounds: rounds.slice(2).map((rnd,ri)=>({
+      name: ['Round of 32','Round of 16','Quarter-Finals','Semi-Finals','Final'][ri],
+      matches: rnd.map(m=>({a:m.a||'TBD', b:m.b||'TBD', winner:m.winner||m.a||'TBD', winner_prob:50}))
+    })),
+    isManual: true,
+  };
+  const saved = getSaved();
+  saved.unshift(pred);
+  if(saved.length>30) saved.splice(30);
+  setSaved(saved);
+  updateSavedBadge();
+  showToast('Picks saved to My Predictions!');
+}
+
+// ── Load from share URL (#p=...) ──────────────────────────────────────
+function loadMyPicksFromURL(){
+  const hash = window.location.hash;
+  if(!hash.startsWith('#p=')) return;
+  try{
+    const raw  = decodeURIComponent(escape(atob(hash.slice(3))));
+    const data = JSON.parse(raw);
+    if(data.v!==1 || !data.w) return;
+    history.replaceState(null,'',window.location.pathname);
+    if(data.t!==tour) setTour(data.t);
+    switchTab('picks');
+    if(picksReady[data.t]){
+      applyPicksFromURL(data, data.t);
+      renderPicksTab();
+    } else {
+      _pendingPicksURL = data;
+      loadMyPicksDraw(data.t);
+    }
+    showToast('Shared picks loaded!');
+  }catch(e){ console.warn('Invalid picks URL'); }
+}
+
+function applyPicksFromURL(data, t){
+  const rounds = myPicksState[t];
+  if(!rounds) return;
+  let idx=0;
+  for(let r=0;r<7;r++){
+    for(let m=0;m<rounds[r].length;m++){
+      const w = data.w[idx++]||null;
+      rounds[r][m].winner=w;
+      if(w && r<6){
+        const pIdx=Math.floor(m/2);
+        const parent=rounds[r+1][pIdx];
+        if(m%2===0) parent.a=w; else parent.b=w;
+      }
+    }
+  }
+  savePicksStored();
+}
+
+// ── Init ──────────────────────────────────────────────────────────────
+loadPlayerData();
+loadLanding();
+loadPlayers();
+loadNameMap(tour);
+updateSavedBadge();
+renderSaved();
+buildSearch('a');
+buildSearch('b');
+loadFromShareURL();
+loadMyPicksFromURL();
+</script>
+</body>
+</html>
